@@ -1,6 +1,6 @@
 cc=clang
 libs=-lmpi
-cflags=-Werror -Wall -pedantic
+cflags=-Werror -Weverything -pedantic 
 compile=-c
 doubleprecisionPI=-D__USE_GNU
 
