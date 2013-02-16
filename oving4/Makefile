@@ -15,7 +15,7 @@ ifeq ($(OS),Darwni) #Do magic
 	includedir=-I<path>
 	includelibs=-L<path>
 endif
-ifeq ($(iskongull),kongull)
+ifeq ($(iskongull),rocks.hpc.ntnu.no)
 	cc=gcc
 	includedir=-I/opt/openmpi/include/
 	includelibs=-L/opt/openmpi/lib/
