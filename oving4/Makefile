@@ -10,7 +10,7 @@ ifeq ($(OS),Linux)
 	includedir=-I/usr/lib/openmpi/include/
 	includelibs=-L/usr/lib/openmpi/lib/
 endif
-ifeq ($(OS),MAC) #Do magic
+ifeq ($(OS),Darwni) #Do magic
 	cc=clang
 	includedir=-I<path>
 	includelibs=-L<path>

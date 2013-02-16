@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 	mpi_com_Init(&argc, & argv);
 	size_t parselength;
 	if ( argc == 2 ){
-		sscanf( argv[1] , "%d", &parselength);
+		sscanf( argv[1] , "%ld", &parselength);
 	}else{
 		mpi_com_Finalize();
 		return 0;
