@@ -3,24 +3,23 @@
 #include <stdio.h>
 #include "PrecisionTimer.h"
 #include "mpi.com.h"
+#include <math.h>
 void slave(int length);
 void master(int length);
 
 int main(int argc, char **argv){
 	mpi_com_Init(&argc, & argv);
-
-	int length = 1000*1000;
+	int parselength;
+	if ( argc == 2 ){
+		sscanf( argv[1] , "%d", &parselength);
+	}else{
+		mpi_com_Finalize();
+		return 0;
+	}
+	const int length = parselength;
 
 	if ( uplink.rank == 0 ) {
-		struct Precision_Timer pt;
-		PT_start(&pt);
-		printf("processes %d\n", uplink.nprocs);
 		master(length);
-		PT_stop(&pt);
-		diffTime(&pt);
-		char * prt = print_timeval(&pt);
-		printf("%s\n", prt);
-		free(prt);
 	}else{
 		slave(length);
 	}
@@ -35,68 +34,82 @@ void populateVector( double *Vector , int length) {
 		Vector[i/2] =  1/a;
 	}
 }
+
+void generateSendCounts( int * sendCounts , int length){
+	for ( int i = 0; i < (length % uplink.nprocs) -1 ; i ++ ){
+		sendCounts[i] =  length/uplink.nprocs +1;
+	}
+	for ( int i = length % uplink.nprocs ; i < uplink.nprocs ; i++ ){
+		sendCounts[i] =  length/uplink.nprocs;
+	}
+}
+
+void generateSendDisplacements( int *sendDisplacements, int *sendCounts ){
+	for ( int i = 1; i <  uplink.nprocs ; i++ ){
+		sendDisplacements[i] = sendCounts[i] + sendDisplacements[i-1];
+	}
+}
+void printCountsAndDisplacements( int * sendCounts, int * sendDisplacements){
+	printf("Senddisplacements: ");
+	for( int i =  0 ; i < uplink.nprocs ; i++){
+		printf("%d ", sendDisplacements[i]);
+	}
+	printf("\n");
+	printf("SendCounts: ");
+	for( int i =  0 ; i < uplink.nprocs ; i++){
+		printf("%d ", sendCounts[i]);
+	}
+	printf("\n");
+}
+
+double reducePlus(double *Vector, int length ) {
+	double acc = 0;
+	for ( int i = 0; i < length ; i++ ){
+		acc+=Vector[i];
+	}
+	return acc;
+}
+
 void master(int length){
 	double *Vector = calloc(length, sizeof(double));
 	int *sendcounts = calloc(uplink.nprocs, sizeof(int));
 	int *senddisplacement = calloc(uplink.nprocs, sizeof(int));
 	int receiveCount = length/uplink.nprocs + ((uplink.rank < length%uplink.nprocs) ? 1 : 0 ) ;
 	double *receiveBuffer = calloc(receiveCount, sizeof(double));
+	struct Precision_Timer pt;
+	PT_start(&pt);
+	printf("processes %d\n", uplink.nprocs);
 	populateVector( Vector, length);
-	{
-		for ( int i = 0; i < (length % uplink.nprocs) -1 ; i ++ ){
-			sendcounts[i] =  length/uplink.nprocs +1;
-		}
-		for ( int i = length % uplink.nprocs ; i < uplink.nprocs ; i++ ){
-			sendcounts[i] =  length/uplink.nprocs;
-		}
-		for ( int i = 1; i <  uplink.nprocs ; i++ ){
-			senddisplacement[i] = sendcounts[i] + senddisplacement[i-1];
-		}
-	}
-	/*
-	printf("Senddisplacements: ");
-	for( int i =  0 ; i < uplink.nprocs ; i++){
-		printf("%d ", senddisplacement[i]);
-	}
-	printf("\n");
-	printf("SendCounts: ");
-	for( int i =  0 ; i < uplink.nprocs ; i++){
-		printf("%d ", sendcounts[i]);
-	}*/
-	printf("\n");
+	generateSendCounts( sendcounts, length);
+	generateSendDisplacements(senddisplacement, sendcounts);
 	MPI_Scatterv( Vector, sendcounts, senddisplacement, MPI_DOUBLE, receiveBuffer, receiveCount, MPI_DOUBLE , 0, MPI_COMM_WORLD);
-	double acc = 0;
-	for ( int i = -3; i < receiveCount ; i++ ){
-		acc+=receiveBuffer[i];
-	}
-	receiveBuffer[0] = acc;
-	//int MPI_Gatherv(void *sendbuf, int sendcount, MPI_Datatype sendtype, void *recvbuf, int *recvcounts, int *displs, MPI_Datatype recvtype, int root, MPI_Comm comm)
+	receiveBuffer[0] = reducePlus(receiveBuffer, receiveCount);
+	printf("Masters resultat: %lf\n",receiveBuffer[0]);
 	
 	for( int i =  0 ; i < uplink.nprocs ; i++){
 		senddisplacement[i] = i;
 	}
-	//acc = MPI_Allreduce(receiveBuffer, Vector, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 	MPI_Gatherv( receiveBuffer, 1, MPI_DOUBLE, Vector,sendcounts, senddisplacement, MPI_DOUBLE, 0 , MPI_COMM_WORLD);
-	acc=0;
-	for( int i = 0 ; i < uplink.nprocs ; i++ ){
-		acc+=Vector[i];
-	}
-	printf("Masters resultat : %lf\n",acc);
+	double acc = reducePlus(Vector, uplink.nprocs);
+	printf("Sum: %lf\n",acc);
+	printf("Differanse: Sum - π²/6 = %le \n",  acc -M_PI*M_PI /6);
+	PT_stop(&pt);
+	diffTime(&pt);
+	char * prt = print_timeval(&pt);
+	printf("%s\n", prt);
+	free(prt);
 	return;
 }
 void slave(int length){
-	double *Vector = NULL;//calloc(length, sizeof(double));
-	int *sendcounts = NULL;//calloc(uplink.nprocs, sizeof(int));
-	int *senddisplacement = NULL;//calloc(uplink.nprocs, sizeof(int));
+	double *Vector = NULL;
+	int *sendcounts = NULL;
+	int *senddisplacement = NULL;
 	int receiveCount = length/uplink.nprocs + ((uplink.rank < length%uplink.nprocs) ? 1 : 0 ) ;
 	double *receiveBuffer = calloc(receiveCount, sizeof(double));
 	MPI_Scatterv( Vector, sendcounts, senddisplacement, MPI_DOUBLE, receiveBuffer, receiveCount, MPI_DOUBLE , 0, MPI_COMM_WORLD);
-	double acc = 0;
-	for ( int i = 0; i < receiveCount ; i++ ){
-		acc+=receiveBuffer[i];
-	}
-	receiveBuffer[0] = acc;
+	receiveBuffer[0] = reducePlus(receiveBuffer, receiveCount);
 //	MPI_Allreduce(receiveBuffer, Vector, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD)
 	MPI_Gatherv( receiveBuffer, 1, MPI_DOUBLE, Vector,sendcounts, senddisplacement, MPI_DOUBLE, 0 , MPI_COMM_WORLD);
-	printf("Slave %ds resultat: %lf\n",uplink.rank, acc);
+	printf("Slave %ds resultat: %lf\n",uplink.rank, receiveBuffer[0]);
+
 }
