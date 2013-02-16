@@ -9,6 +9,7 @@ extraflags=
 ifeq ($(kongull),true)
 	kongullincludedir=-I/opt/openmpi/include/
 	kongullincludelibs=-L/opt/openmpi/lib/
+	cflags=-Werror -Wall -pedantic 
 endif
 
 prog: mpi.c PrecisionTimer.o mpi.com.o
