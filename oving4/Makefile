@@ -5,6 +5,8 @@ cflags=-Werror -Weverything -pedantic
 compile=-c
 kongull=
 std=-std=gnu99
+
+
 ifeq ($(OS),Linux)
 	cc=clang
 	includedir=-I/usr/lib/openmpi/include/
@@ -22,8 +24,12 @@ ifeq ($(iskongull),kongull)
 	cflags=-Werror -Wall -pedantic 
 endif
 
+
 prog: mpi.c PrecisionTimer.o mpi.com.o
 	$(cc)  $(doubleprecisionPI) $(std) $(libs) $(cflags) $(includelibs) $(includedir)  PrecisionTimer.o mpi.c mpi.com.o
+
+debug: cflags += -DDEBUG -g
+debug: prog
 	
 test: 
 	echo $(OS)

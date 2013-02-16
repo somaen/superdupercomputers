@@ -5,6 +5,8 @@ void mpi_com_Init( int *argc, char ***argv){
 	int irank, inprocs;
 	MPI_Comm_rank(MPI_COMM_WORLD, &irank);
 	MPI_Comm_size(MPI_COMM_WORLD, &inprocs);
+	uplink.rank = (size_t)irank;
+	uplink.nprocs = (size_t)inprocs;
 }
 
 void mpi_com_Finalize(void){

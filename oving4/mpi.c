@@ -26,6 +26,11 @@ int main(int argc, char **argv){
 	}
 	const size_t length = parselength;
 
+#ifdef DEBUG
+	printf( "rank=%ld\n", uplink.rank); 
+	printf( "procs=%ld\n", uplink.nprocs) ;
+#endif
+
 	if ( uplink.rank == 0 ) {
 		master(length);
 	}else{
