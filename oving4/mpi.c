@@ -26,6 +26,11 @@ int main(int argc, char **argv){
 	}
 	const size_t length = parselength;
 
+#ifdef DEBUG
+	printf( "rank=%ld\n", uplink.rank); 
+	printf( "procs=%ld\n", uplink.nprocs) ;
+#endif
+
 	if ( uplink.rank == 0 ) {
 		master(length);
 	}else{
@@ -50,7 +55,7 @@ void master(size_t length){
 	int *sendcounts = calloc(uplink.nprocs, sizeof(int));
 	int *senddisplacement = calloc(uplink.nprocs, sizeof(int));
 	int receiveCount = (int)( length/uplink.nprocs + ((uplink.rank < length%uplink.nprocs) ? 1 : 0 ) );
-	double *receiveBuffer = calloc((size_t)receiveCount, sizeof(double));
+	double *receiveBuffer = Vector;
 	struct Precision_Timer pt;
 	PT_start(&pt);
 	printf("processes %ld\n", uplink.nprocs);
