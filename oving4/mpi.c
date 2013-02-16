@@ -36,7 +36,7 @@ void populateVector( double *Vector , int length) {
 }
 
 void generateSendCounts( int * sendCounts , int length){
-	for ( int i = 0; i < (length % uplink.nprocs) -1 ; i ++ ){
+	for ( int i = 0; i < (length % uplink.nprocs) ; i ++ ){
 		sendCounts[i] =  length/uplink.nprocs +1;
 	}
 	for ( int i = length % uplink.nprocs ; i < uplink.nprocs ; i++ ){
@@ -70,6 +70,13 @@ double reducePlus(double *Vector, int length ) {
 	return acc;
 }
 
+void printdoubleVetor(double *Vector, int length ) {
+	for ( int i = 0; i < length ; i++ ){
+		printf("%lf", Vector[i]);
+	}
+	printf("\n");
+}
+
 void master(int length){
 	double *Vector = calloc(length, sizeof(double));
 	int *sendcounts = calloc(uplink.nprocs, sizeof(int));
@@ -82,6 +89,7 @@ void master(int length){
 	populateVector( Vector, length);
 	generateSendCounts( sendcounts, length);
 	generateSendDisplacements(senddisplacement, sendcounts);
+	printCountsAndDisplacements( sendcounts,senddisplacement);
 	MPI_Scatterv( Vector, sendcounts, senddisplacement, MPI_DOUBLE, receiveBuffer, receiveCount, MPI_DOUBLE , 0, MPI_COMM_WORLD);
 	receiveBuffer[0] = reducePlus(receiveBuffer, receiveCount);
 	printf("Masters resultat: %lf\n",receiveBuffer[0]);
@@ -93,6 +101,7 @@ void master(int length){
 	double acc = reducePlus(Vector, uplink.nprocs);
 	printf("Sum: %lf\n",acc);
 	printf("Differanse: Sum - π²/6 = %le \n",  acc -M_PI*M_PI /6);
+	printf("Differanse: Sum - π²/6 = %lf \n",  acc -M_PI*M_PI /6);
 	PT_stop(&pt);
 	diffTime(&pt);
 	char * prt = print_timeval(&pt);
