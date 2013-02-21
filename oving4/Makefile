@@ -25,15 +25,12 @@ ifeq ($(iskongull),kongull)
 endif
 
 
-prog: mpi.c PrecisionTimer.o mpi.com.o
-	$(cc)  $(doubleprecisionPI) $(std) $(libs) $(cflags) $(includelibs) $(includedir)  PrecisionTimer.o mpi.c mpi.com.o
+prog: VectorSum.c PrecisionTimer.o mpi.com.o 
+	$(cc)  $(std) $(libs) $(cflags) $(includelibs) $(includedir)  PrecisionTimer.o VectorSum.c mpi.com.o -o VectorSum
 
 debug: cflags += -DDEBUG -g
 debug: prog
 	
-test: 
-	echo $(OS)
-
 PrecisionTimer.o: PrecisionTimer.c
 	$(cc) $(cflags) $(std) $(compile)  $(includedir) PrecisionTimer.c
 
