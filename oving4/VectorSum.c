@@ -1,10 +1,3 @@
-//#if defined(__APPLE__) && defined(__MACH__)
-//#include </opt/local/include/openmpi/mpi.h>
-//#elif __LINUX__
-//#include </usr/lib/openmpi/include/mpi.h>
-//#else
-//#include </opt/openmpi/include/mpi.h>
-//#endif
 #include <mpi.h>
 #include <sys/time.h>
 #include <stdio.h>
