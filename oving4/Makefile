@@ -28,6 +28,9 @@ endif
 prog: VectorSum.c PrecisionTimer.o mpi.com.o 
 	$(cc)  $(std) $(libs) $(cflags) $(includelibs) $(includedir)  PrecisionTimer.o VectorSum.c mpi.com.o -o VectorSum
 
+SingleThread: SingleThread.c
+	$(cc) $(std) $(libs) $(cflags) $(includelibs) $(includedir) SingleThread.c -o SingleThread
+
 debug: cflags += -DDEBUG -g
 debug: prog
 	
