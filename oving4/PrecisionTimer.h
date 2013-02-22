@@ -10,4 +10,4 @@ struct Precision_Timer {
 void PT_start ( struct Precision_Timer *pt);
 void PT_stop ( struct Precision_Timer *pt);
 void diffTime( struct Precision_Timer *pt );
-char *print_timeval( struct Precision_Timer *pt);
+void print_timeval( struct Precision_Timer *pt, char *mystr);

@@ -15,8 +15,7 @@ void diffTime( struct Precision_Timer *pt ){
 	}
 	return;
 }
-char *print_timeval( struct Precision_Timer *pt){
-	char *mystr = calloc(1000, sizeof(char));
+void print_timeval( struct Precision_Timer *pt, char *mystr){
 	snprintf(mystr, 1000, "%ld seconds and %ld µseconds", (long)pt->time_diff.tv_sec, (long)pt->time_diff.tv_usec );
-	return mystr;
+	return;
 }
