@@ -1,97 +1,46 @@
-//#if defined(__APPLE__) && defined(__MACH__)
-//#include </opt/local/include/openmpi/mpi.h>
-//#elif __LINUX__
-//#include </usr/lib/openmpi/include/mpi.h>
-//#else
-//#include </opt/openmpi/include/mpi.h>
-//#endif
-#include <mpi.h>
 #include <sys/time.h>
 #include <stdio.h>
 #include "PrecisionTimer.h"
 #include "mpi.com.h"
 #include <math.h>
-void slave(size_t length);
-void master(size_t length);
-void populateVector( double *Vector , size_t length);
+double *generateVector(size_t binaryLogLength);
 
 int main(int argc, char **argv){
 	mpi_com_Init(&argc, & argv);
-	size_t parselength;
-	if ( argc == 2 ){
-		sscanf( argv[1] , "%zu", &parselength);
-	}else{
-		mpi_com_Finalize();
-		return 0;
-	}
-	const size_t length = parselength;
-
 #ifdef DEBUG
 	printf( "rank=%ld\n", uplink.rank); 
 	printf( "procs=%ld\n", uplink.nprocs) ;
 #endif
-
-	if ( uplink.rank == 0 ) {
-		master(length);
-	}else{
-		slave(length);
+	double *Vector =NULL;
+	double *recvb = NULL;
+	for ( size_t k = 4 ; k <=14 ; k++ ) {
+		int range =1<<(k-uplink.nprocs+1); 
+		Vector = generateVector( k );
+		Vector[0] =reducePlus(Vector, range);
+		if (uplink.rank == 0){
+			recvb = realloc(recvb, (size_t)range* sizeof(double));
+			MPI_Reduce( (void*)Vector, (void*)recvb, range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD );
+			printf("Sum: %lf\n", recvb[0]);
+			printf("Error is: %e\n", recvb[0] - M_PI*M_PI/6);
+		}else {
+			recvb = NULL;
+			MPI_Reduce( (void*)Vector, (void*)recvb, range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD );
+		}
 	}
-	
+	free(Vector );
+	free(recvb );
 	mpi_com_Finalize();
 	return 0;
 }
 
-void populateVector( double *Vector , size_t length) {
-	double a = 0; 
-	for ( size_t i = 1 ; i < 2*length ; i+=2 ){
-		a+=i;
-		Vector[i/2] =  1/a;
+double *generateVector( size_t binaryLogLength) {
+	size_t range =1<<(binaryLogLength-uplink.nprocs+1); 
+	size_t lowLim = range*uplink.rank;
+	size_t highLim = lowLim+range;
+	double *Vector = realloc(NULL,range* sizeof(double));
+	for ( size_t i = lowLim ; i < highLim ; i ++){
+		Vector[i-lowLim] = pow(i+1,-2);
 	}
+	return Vector;
 }
 
-
-void master(size_t length){
-	double *Vector = calloc(length, sizeof(double));
-	int *sendcounts = calloc(uplink.nprocs, sizeof(int));
-	int *senddisplacement = calloc(uplink.nprocs, sizeof(int));
-	int receiveCount = (int)( length/uplink.nprocs + ((uplink.rank < length%uplink.nprocs) ? 1 : 0 ) );
-	double *receiveBuffer = Vector;
-	struct Precision_Timer pt;
-	PT_start(&pt);
-	printf("processes %ld\n", uplink.nprocs);
-	populateVector( Vector, length);
-	generateSendCounts( sendcounts, length);
-	generateSendDisplacements(senddisplacement, sendcounts);
-	printCountsAndDisplacements( sendcounts,senddisplacement);
-	MPI_Scatterv( Vector, sendcounts, senddisplacement, MPI_DOUBLE, receiveBuffer, receiveCount, MPI_DOUBLE , 0, MPI_COMM_WORLD);
-	receiveBuffer[0] = reducePlus(receiveBuffer, receiveCount);
-	printf("Masters resultat: %lf\n",receiveBuffer[0]);
-	
-	for( size_t i =  0 ; i < uplink.nprocs ; i++){
-		senddisplacement[i] = (int)i;
-	}
-	MPI_Gatherv( receiveBuffer, 1, MPI_DOUBLE, Vector,sendcounts, senddisplacement, MPI_DOUBLE, 0 , MPI_COMM_WORLD);
-	double acc = reducePlus(Vector, (int)uplink.nprocs);
-	printf("Sum: %lf\n",acc);
-	printf("Differanse: Sum - π²/6 = %le \n",  acc -M_PI*M_PI /6);
-	printf("Differanse: Sum - π²/6 = %lf \n",  acc -M_PI*M_PI /6);
-	PT_stop(&pt);
-	diffTime(&pt);
-	char * prt = print_timeval(&pt);
-	printf("%s\n", prt);
-	free(prt);
-	return;
-}
-void slave(size_t length){
-	double *Vector = NULL;
-	int *sendcounts = NULL;
-	int *senddisplacement = NULL;
-	int receiveCount = (int)(length/uplink.nprocs + ((uplink.rank < length%uplink.nprocs) ? 1 : 0 ) );
-	double *receiveBuffer = calloc((size_t)receiveCount, sizeof(double));
-	MPI_Scatterv( Vector, sendcounts, senddisplacement, MPI_DOUBLE, receiveBuffer, receiveCount, MPI_DOUBLE , 0, MPI_COMM_WORLD);
-	receiveBuffer[0] = reducePlus(receiveBuffer, receiveCount);
-//	MPI_Allreduce(receiveBuffer, Vector, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD)
-	MPI_Gatherv( receiveBuffer, 1, MPI_DOUBLE, Vector,sendcounts, senddisplacement, MPI_DOUBLE, 0 , MPI_COMM_WORLD);
-	printf("Slave %lds resultat: %lf\n",uplink.rank, receiveBuffer[0]);
-
-}
