@@ -25,8 +25,9 @@ ifeq ($(iskongull),kongull)
 	cflags=-Werror -Wall -pedantic 
 endif
 
+all: SingleThread MultiThread VectorSum
 
-prog: VectorSum.c PrecisionTimer.o mpi.com.o 
+VectorSum: VectorSum.c PrecisionTimer.o mpi.com.o 
 	$(cc)  $(std) $(libs) $(cflags) $(includelibs) $(includedir)  PrecisionTimer.o VectorSum.c mpi.com.o -o VectorSum
 
 SingleThread: SingleThread.c PrecisionTimer.c
@@ -38,7 +39,6 @@ MultiThread: MultiThread.c PrecisionTimer.c
 debug: cflags += -DDEBUG -g
 debug: prog
 
-all: SingleThread MultiThread prog
 
 test: MultiThread SingleThread
 	./SingleThread > singleout && \
