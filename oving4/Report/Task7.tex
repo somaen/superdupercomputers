@@ -12,7 +12,15 @@ The C-code we use to generate the Vector in our single-threaded solution
 looks like this:
 \inputminted[tabsize=4]{c}{CreateVector.c}
 
-Here we have rewritten \begin{align*}\dfrac{1}{i^2}\end{align*} as \begin{align*}\dfrac{\left(\frac{1}{i}\right)}{(i)}\end{align*}, which
+Here we have rewritten 
+\begin{align*}
+\dfrac{1}{i^2}
+\end{align*} 
+as 
+\begin{align*}
+\dfrac{\left(\frac{1}{i}\right)}{(i)}
+\end{align*}
+which
 should still give use 2 floating-point arithmetic operations.
 
 The relevant parts of the assembly for this for-loop looks like this:
