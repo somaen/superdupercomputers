@@ -1,0 +1,35 @@
+\section{Task 7: How many floating ops?}
+
+Calculating \begin{*align}\sum_{i=1}^{2^k}\dfrac{1}{i^2}\end{*align} should in theory require 2 floating
+point operations per summation (that is \begin{*align}2*2^k\end{*align} floating point operations in all.)
+The reasoning behind this is simply that every summation has one multiply operation ($i^2$ = i * i), and one division
+($1/...$). To verify this assumption we looked at the assembly output from GCC.
+
+The C-code we use to generate the Vector in our single-threaded solution
+looks like this:
+\inputminted[tabsize=4]{c}{CreateVector.c}
+
+Here we have rewritten \begin{*align}\dfrac{1}{i^2}\end{*align} as \begin{*align}\dfrac{\left(\frac{1}{i}\right)}{(i)}\end{*align}, which
+should still give use 2 floating-point arithmetic operations.
+
+The relevant parts of the assembly for this for-loop looks like this:
+
+\inputminted[linenos]{gas}{SingleThread.s}
+
+From this we note that there are indeed 2 arithmetic operations (\textit{divsd} in line 4 and 7), along with quite a few move-operations,
+and a pair of casting-operations (\textit{cvtsi2sd} in line 1 and 6), that appear since we divide a float by an int. Technically we could
+have used a double as our dividend explicitly, but that would not have reduced the situation by 2 full instructions,
+as the loop-iteration would then need to do a floating-point add (to increment j), instead of an integer add.
+
+\subsection{How many floating point operations are needed to generate the vector \underline{v}?}
+The answer is thus that we need 4 floating point arithmetic operations per loop-iteration, giving 4n-floating point arithmetic-
+operations in all. If we are to include the move-operations too, this number becomes 8n, adding an additional 2 \textit{movsd},
+and 2 \textit{movapd}-instructions to the overall sum per loop-iteration.
+
+\subsection{How many floating point operations are needed to compute $S_n$ in (2)?}
+To calculate $S_n$ we will need n floating point add operations (\textit{adds}), (as well as 3 movsd operations to get the divisor/dividend
+into registers, and the result back into memory). Thus we need \textit{n} floating point arithmetic operations, or \textit{4n} floating point
+operations total if move-operations are to be considered as well.
+
+\subsection{Is the multi-processor program load-balanced?}
+Approximately yes, the master node needs to do the REDUCE_PLUS work in MPI_REDUCE.
