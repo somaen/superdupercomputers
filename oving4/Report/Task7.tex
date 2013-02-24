@@ -1,7 +1,7 @@
 \section{How many floating ops?}
 
-Calculating \begin{*align}\sum_{i=1}^{2^k}\dfrac{1}{i^2}\end{*align} should in theory require 2 floating
-point operations per summation (that is \begin{*align}2*2^k\end{*align} floating point operations in all.)
+Calculating \begin{align*}\sum_{i=1}^{2^k}\dfrac{1}{i^2}\end{align*} should in theory require 2 floating
+point operations per summation (that is \begin{align*}2*2^k\end{align*} floating point operations in all.)
 The reasoning behind this is simply that every summation has one multiply operation ($i^2$ = i * i), and one division
 ($1/...$). To verify this assumption we looked at the assembly output from GCC.
 
@@ -9,7 +9,7 @@ The C-code we use to generate the Vector in our single-threaded solution
 looks like this:
 \inputminted[tabsize=4]{c}{CreateVector.c}
 
-Here we have rewritten \begin{*align}\dfrac{1}{i^2}\end{*align} as \begin{*align}\dfrac{\left(\frac{1}{i}\right)}{(i)}\end{*align}, which
+Here we have rewritten \begin{align*}\dfrac{1}{i^2}\end{align*} as \begin{align*}\dfrac{\left(\frac{1}{i}\right)}{(i)}\end{align*}, which
 should still give use 2 floating-point arithmetic operations.
 
 The relevant parts of the assembly for this for-loop looks like this:
@@ -28,5 +28,4 @@ To calculate $S_n$ we will need n floating point add operations (\textit{adds}),
 into registers, and the result back into memory). Thus we need \textit{n} floating point arithmetic operations, or \textit{4n} floating point
 operations total if move-operations are to be considered as well.
 
-Since our Multi-Processor program splits the vector evenly across it's available processors,
-the major load of the calculation is evenly split, the only node that has any additional work is the master node, which has to sum the partial results from the other nodes when doing the REDUCE\_PLUS work in MPI\_REDUCE, this is however only a matter of #Processors extra sums for that node, which will be negligible compared to the rest of the work involved. The Multi-Processor program is thus quite load balanced.
+Since our Multi-Processor program splits the vector evenly across it's available processors, the major load of the calculation is evenly split, the only node that has any additional work is the master node, which has to sum the partial results from the other nodes when doing the REDUCE\_PLUS work in MPI\_REDUCE, this is however only a matter of \#Processors extra sums for that node, which will be negligible compared to the rest of the work involved. The Multi-Processor program is thus quite load balanced.
