@@ -4,7 +4,7 @@
 
 int main(
 	//int argc, char ** argv
-		 ) {
+) {
 	struct Precision_Timer *pt = calloc(1, sizeof(struct Precision_Timer));
 	PT_start(pt);
 	double *Vector = calloc(1 << 14, sizeof(double));
@@ -16,7 +16,7 @@ int main(
 	char *elapsedTime = calloc(1000, sizeof(char));
 	print_timeval(pt, elapsedTime);
 	printf("%s\n", elapsedTime);
-	int start = 0; 	// Avoid recalculation in the summation
+	int start = 0;  // Avoid recalculation in the summation
 	double acc = 0;
 	for (int k = 4 ; k <= 14 ; k++) {
 		PT_start(pt);
