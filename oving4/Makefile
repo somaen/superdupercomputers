@@ -12,10 +12,10 @@ ifeq ($(OS),Linux)
 	includedir=-I/usr/lib/openmpi/include/
 	includelibs=-L/usr/lib/openmpi/lib/
 endif
-ifeq ($(OS),Darwni) #Do magic
+ifeq ($(OS),Darwin) #Do magic
 	cc=clang
-	includedir=-I<path>
-	includelibs=-L<path>
+	includedir=-I/opt/local/include/openmpi
+	includelibs=-L/opt/local/lib
 endif
 ifeq ($(iskongull),kongull)
 	cc=gcc
