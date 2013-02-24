@@ -1,8 +1,8 @@
 #include <sys/time.h>
 #include <stdio.h>
+#include <math.h>
 #include "PrecisionTimer.h"
 #include "mpi.com.h"
-#include <math.h>
 double *generateVector(size_t binaryLogLength);
 
 int main(int argc, char **argv) {
@@ -13,18 +13,17 @@ int main(int argc, char **argv) {
 #endif
 	double *Vector = NULL;
 	double *recvb = NULL;
-	for (size_t k = 4 ; k <= 14 ; k++) {
-		int range = 1 << (k - uplink.nprocs + 1);
+	for (size_t k = 4 ; k <= 24 ; k++) {
+		size_t range = (1 << (k + 1))/(uplink.nprocs);
 		Vector = generateVector(k);
-		Vector[0] = reducePlus(Vector, range);
+		Vector[0] = reducePlus(Vector, (int)range);
 		if (uplink.rank == 0) {
 			recvb = realloc(recvb, (size_t)range * sizeof(double));
-			MPI_Reduce((void *)Vector, (void *)recvb, range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-			printf("Sum: %lf\n", recvb[0]);
-			printf("Error is: %e\n", recvb[0] - M_PI * M_PI / 6);
+			MPI_Reduce((void *)Vector, (void *)recvb, (int)range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+			printf("Error is: %e, k=%zu\n", M_PI*M_PI/6 - recvb[0],k );
 		} else {
 			recvb = NULL;
-			MPI_Reduce((void *)Vector, (void *)recvb, range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+			MPI_Reduce((void *)Vector, (void *)recvb, (int)range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 		}
 	}
 	free(Vector);
@@ -34,7 +33,7 @@ int main(int argc, char **argv) {
 }
 
 double *generateVector(size_t binaryLogLength) {
-	size_t range = 1 << (binaryLogLength - uplink.nprocs + 1);
+	size_t range = (1 << (binaryLogLength + 1))/(uplink.nprocs);
 	size_t lowLim = range * uplink.rank;
 	size_t highLim = lowLim + range;
 	double *Vector = realloc(NULL, range * sizeof(double));
