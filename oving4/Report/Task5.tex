@@ -1,4 +1,30 @@
 \section{Task 5: Comparison between Single-processor and Multi-processor}
 
-The Single-Processor solution has a larger difference than the Multi-Processor solution.
+For the ranges defined in the task, the Single-Processor and the Multi-Processor-solutions
+have the same results ($k = 4, ... 14$), however, when we try to increase k further, we
+notice a difference between the solutions. The Single-Processor-solution has the following results
+for $k = 4, ... 24$:
+\inputminted{matlab}{singleout}
+
+These are quite similar to the results for 4 and 16 Processors, however there are a few differences,
+notably 4 Processors gets these differing results:
+
+\inputminted{matlab}{4proc}
+
+and 16 Processors gets a minor difference again in the higher cases:
+
+\inputminted{matlab}{16proc}
+
+Only the differences from the single-processors solution is shown here.
+
+The variance in results here stems from the fact that the Single-Processor solution does a linear sum
+of elements, and will thus have a higher amount of accumulated floating point error, as small numbers
+will be ignored due to round-off-error when the accumulated sum gets large enough. The Multi-Processor
+solution on the other hand, does partial sums that are then accumulated together, which makes the partial
+sums smaller, and will thus accumulate more of the small partial sums before losing them to round-off-errors,
+it thus also follows that the more processors that does partial sums, the more partial sums we split the
+summation into, and thus we will have smaller partial sums, allowing us to accumulate more of the sums before
+losing any of the partial sums to round-off error.
+
+The answer should thus NOT be the same for all these cases, but in fact better with larger P.
 
