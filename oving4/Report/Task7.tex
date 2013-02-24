@@ -28,5 +28,4 @@ To calculate $S_n$ we will need n floating point add operations (\textit{adds}),
 into registers, and the result back into memory). Thus we need \textit{n} floating point arithmetic operations, or \textit{4n} floating point
 operations total if move-operations are to be considered as well.
 
-Since our Multi-Processor program splits the vector evenly across it's available processors,
-the major load of the calculation is evenly split, the only node that has any additional work is the master node, which has to sum the partial results from the other nodes when doing the reduce/fold work in MPI\_REDUCE, this is however only a matter of #Processors extra sums for that node, which will be negligible compared to the rest of the work involved. The Multi-Processor program is thus quite load balanced.
+Since our Multi-Processor program splits the vector evenly across it's available processors, the major load of the calculation is evenly split, the only node that has any additional work is the master node, which has to sum the partial results from the other nodes when doing the REDUCE\_PLUS work in MPI\_REDUCE, this is however only a matter of \#Processors extra sums for that node, which will be negligible compared to the rest of the work involved. The Multi-Processor program is thus quite load balanced.
