@@ -10,7 +10,7 @@ int main() {
 	double *Vector = calloc(1 << limit, sizeof(double));
 	// Calculate the vector
 	Vector--; // C got arbitrary indexing of arrays too! 
-	for (int i = 1 ; i < (1 << limit) + 0 ; i++) {
+	for (int i = 1 ; i < (1 << limit) + 1 ; i++) {
 		Vector[i] = 1. / i / i;
 	}
 	Vector++;
