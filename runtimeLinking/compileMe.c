@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+
+#ifdef __APPLE__
+#undef WEXITSTATUS
+#define WEXITSTATUS(x) x
+#endif
+
 int main (int argc, char **argv){
 	const char * populate = "#include <stddef.h>\n#include <math.h>\n" "void populateVector( double *Vector , size_t length) {\n" "\tfor ( size_t %s = 0 ; %s < length ; %s++ ){\n" "\t\tVector[%s] =  %s;\n" "\t}\n" "}\n";
 	if ( argc == 3 ){
@@ -24,7 +30,7 @@ int main (int argc, char **argv){
 			size_t length =10;
 			double *Vector = calloc(1000, sizeof(double));
 			void (*func)(double *, size_t);
-			void *dyn = dlopen("/home/torje/libhello.so", RTLD_NOW);
+			void *dyn = dlopen("./libhello.so", RTLD_NOW);
 			if (dlErrMsg != NULL){
 				printf("%s\n", dlErrMsg);
 				return 0;
