@@ -1,0 +1,6 @@
+\section{Memory requirement}
+As every solution demands the exact same total vector, the multiprocessor variant demands less memory per processor. If we let the vector be so large that the overhead per process is insignificant we can model the memory requirement per processor as this: 
+\begin{align*}
+\mathrm{Memory\; per\; processor} =\dfrac{\mathrm{sizeof}\left(\mathrm{Vector}\right)}{|\mathrm{processors}|}
+\end{align*}
+Which means that for large vectors the memory requirement is easily reducable by parallelisation. 

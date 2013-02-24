@@ -1,2 +1,29 @@
 \section{Distributed memory}
-\inputminted{c}{../VectorSum.c}
+Our implementation is quite straightforward with each process populating its own vector of numbers. This is achieved by using the rank of the process to find out which vector range it should work on: 
+\begin{align}
+\mathrm{limit}_{↓} &= \mathrm{rank}\cdot |\mathrm{subvector}|\\
+\mathrm{limit}_{↑} &= (\mathrm{rank} +1 )\cdot |\mathrm{subvector}|\\
+|\mathrm{subvector}| &= \dfrac{|\mathrm{Vector}|}{|\mathrm{processors}|}
+\end{align}
+
+Using a normal \emph{for}-loop to iterate through the \emph{vector}, \emph{vector[i]} is substituted 
+with $\frac{1}{(i+1)^2}$. Every processor then reduces with + its \emph{subvector} and saves it to a 
+\emph{double}. This \emph{double} is then passed to the process with \emph{rank} 0 with 
+\emph{MPI\_Reduce}. 
+
+\subsection*{The bare minimum of MPI-calls}
+To initiate MPI we need to call \emph{MPI\_Init} and to obtain the rank and process number we need to 
+use \emph{MPI\_Comm\_rank()} and \emph{MPI\_Comm\_size()}. To send all the values back to rank 0 we 
+use \emph{MPI\_Reduce} and exiting we must clean up, done by calling \emph{MPI\_Finalize}. These calls we hid in the form of a small C-file that wraps up the initialisation and cleanup, the cleanup only to be consistent in startup and exit. 
+\begin{itemize}
+\item int MPI\_Init(int *argc, char **argv);
+Takes pointers to your commandline arguments, presumably to set them right on every process.
+\item int MPI\_Comm\_rank(MPI\_Comm comm, int *rank);
+A getter for rank number. 
+\item int MPI\_Comm\_size(MPI\_Comm comm, int *nprocs);
+A getter for getting the count of the processes in the group. 
+\item int MPI\_Finalize()
+\end{itemize}
+\subsection{Code for shared memory program}
+\inputminted[tabsize=4]{c}{../VectorSum.c}
+
