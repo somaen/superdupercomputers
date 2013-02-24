@@ -8,7 +8,6 @@ int main() {
 			sizeof(struct Precision_Timer));
 	PT_start(pt);
 	size_t limit = 14;
-	printf("Limit is %zu\n", limit);
 	double *Vector = calloc(1 << limit, sizeof(double));
 	size_t ulim = 1 << limit;
 	for (size_t i = 0, j = 1 ; i < ulim ; i++, j++) {

@@ -1,16 +1,13 @@
-#include <sys/time.h>
 #include <stdio.h>
 #include <math.h>
-#include "PrecisionTimer.h"
-#include "mpi.com.h"
+#include "mpi.com.h" //Trivial wrappers for some MPI functions, 
+//also giving the uplink global struct which contains nprocs 
+//and rank
+
 double *generateVector(size_t binaryLogLength);
 
 int main(int argc, char **argv) {
 	mpi_com_Init(&argc, & argv);
-#ifdef DEBUG
-	printf("rank=%ld\n", uplink.rank);
-	printf("procs=%ld\n", uplink.nprocs);
-#endif
 	double *Vector = NULL;
 	double *recvb = NULL;
 	for (size_t k = 4 ; k <= 24 ; k++) {
@@ -19,11 +16,14 @@ int main(int argc, char **argv) {
 		Vector[0] = reducePlus(Vector, (int)range);
 		if (uplink.rank == 0) {
 			recvb = realloc(recvb, (size_t)range * sizeof(double));
-			MPI_Reduce((void *)Vector, (void *)recvb, (int)range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-			printf("Error is: %e, k=%zu\n", M_PI*M_PI/6 - recvb[0],k );
+			MPI_Reduce((void *)Vector, (void *)recvb, (int)range, 
+					MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+			printf("Error is: %e, k=%zu\n", 
+					M_PI*M_PI/6 - recvb[0],k );
 		} else {
 			recvb = NULL;
-			MPI_Reduce((void *)Vector, (void *)recvb, (int)range, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+			MPI_Reduce((void *)Vector, (void *)recvb, (int)range, 
+					MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 		}
 	}
 	free(Vector);

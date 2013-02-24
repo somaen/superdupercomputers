@@ -1,25 +1,15 @@
 #include <omp.h>
 #include <math.h>
 #include <stdio.h>
-#include "PrecisionTimer.h"
 
-int main(
-    //int argc, char ** argv
-) {
-	struct Precision_Timer *pt = calloc(1, sizeof(struct Precision_Timer));
+int main() {
+	struct Precision_Timer *pt = calloc(1, 
+			sizeof(struct Precision_Timer));
 	size_t limit = 29;
 	printf("Limit is %zu\n", limit);
 	double *Vector = calloc(1 << limit, sizeof(double));
-	Vector--;
 	// Calculate the vector
-	int tid;
-	#pragma omp parallel private(tid)
-	{
-		tid = omp_get_thread_num();
-		printf("Hi, I'm a thread, What is love? It is %d!!!!!!!\n", tid);
-	}
-	PT_start(pt);
-	#pragma omp parallel for schedule(static)
+	Vector--; // C got arbitrary indexing of arrays too! 
 	for (int i = 1 ; i < (1 << limit) + 0 ; i++) {
 		Vector[i] = 1. / i / i;
 	}
