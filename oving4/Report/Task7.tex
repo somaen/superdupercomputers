@@ -27,16 +27,16 @@ The relevant parts of the assembly for this for-loop looks like this:
 
 \inputminted[linenos]{gas}{SingleThread.s}
 
-From this we note that there are indeed 2 arithmetic operations (\textit{divsd} in line 4 and 7), along with quite a few move-operations,
-and a pair of casting-operations (\textit{cvtsi2sd} in line 1 and 6), that appear since we divide a float by an int. Technically we could
+From this we note that there are indeed 2 arithmetic operations (\emph{divsd} in line 4 and 7), along with quite a few move-operations,
+and a pair of casting-operations (\emph{cvtsi2sd} in line 1 and 6), that appear since we divide a float by an int. Technically we could
 have used a double as our dividend explicitly, but that would not have reduced the situation by 2 full instructions,
 as the loop-iteration would then need to do a floating-point add (to increment j), instead of an integer add.
 
-We thus need 4 floating point arithmetic operations per loop-iteration, giving 4n-floating point arithmetic-operations in all. If we are to include the move-operations too, this number becomes 8n, adding an additional 2 \textit{movsd},
-and 2 \textit{movapd}-instructions to the overall sum per loop-iteration.
+We thus need 4 floating point arithmetic operations per loop-iteration, giving 4n-floating point arithmetic-operations in all. If we are to include the move-operations too, this number becomes 8n, adding an additional 2 \emph{movsd},
+and 2 \emph{movapd}-instructions to the overall sum per loop-iteration.
 
-To calculate $S_n$ we will need n floating point add operations (\textit{adds}), (as well as 3 movsd operations to get the divisor/dividend
-into registers, and the result back into memory). Thus we need \textit{n} floating point arithmetic operations, or \textit{4n} floating point
+To calculate $S_n$ we will need n floating point add operations (\emph{adds}), (as well as 3 movsd operations to get the divisor/dividend
+into registers, and the result back into memory). Thus we need \emph{n} floating point arithmetic operations, or \emph{4n} floating point
 operations total if move-operations are to be considered as well.
 
 Since our Multi-Processor program splits the vector evenly across it's available processors, the major load of the calculation is evenly split, the only node that has any additional work is the master node, which has to sum the partial results from the other nodes when doing the REDUCE\_PLUS work in MPI\_REDUCE, this is however only a matter of \#Processors extra sums for that node, which will be negligible compared to the rest of the work involved. The Multi-Processor program is thus quite load balanced.
