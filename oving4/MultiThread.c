@@ -10,6 +10,7 @@ int main() {
 	double *Vector = calloc(1 << limit, sizeof(double));
 	// Calculate the vector
 	Vector--; // C got arbitrary indexing of arrays too! 
+	#pragma omp parallel for schedule(static) 
 	for (int i = 1 ; i < (1 << limit) + 1 ; i++) {
 		Vector[i] = 1. / i / i;
 	}
