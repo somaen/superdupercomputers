@@ -1,7 +1,10 @@
 \section{How many floating ops?}
 
 Calculating \begin{align*}\sum_{i=1}^{2^k}\dfrac{1}{i^2}\end{align*} should in theory require 2 floating
-point operations per summation (that is \begin{align*}2*2^k\end{align*} floating point operations in all.)
+point operations per summation (that is 
+\begin{align*}2\cdot 2^k
+\end{align*} 
+floating point operations in all.)
 The reasoning behind this is simply that every summation has one multiply operation ($i^2$ = i * i), and one division
 ($1/...$). To verify this assumption we looked at the assembly output from GCC.
 
