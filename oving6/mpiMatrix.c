@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <mpi.h>
+#include <string.h>
 #include "mpi.com.h"
 
 
@@ -22,13 +23,42 @@ void populate( struct mpiMatrix * matrix , struct mpi_com *uplink) {
 
 int main(int argc, char** argv){
 	struct mpi_com uplink;
-	//uplink.nprocs = 1;
-	//uplink.rank =0;
 	mpi_com_Init(&uplink, &argc, &argv);
 	struct mpiMatrix * matrix = mpiMatrix_ctor(100,100, uplink); 
 	printf("%p\n", matrix );
 	mpi_com_Finalize();
 	return 0;
+}
+
+int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink) {
+	int mynumber = matrix -> height /  uplink -> height;
+	if ( uplink->rank<( matrix -> height % uplink -> nprocs)){
+		mynumber +=1;
+	}
+	int *counts = calloc( uplink->nprocs, sizeof(int));
+	for ( size_t process = 0 ; 
+			process < matrix -> height % uplink -> nprocs; 
+			process++) {
+		counts[process] = ( matrix -> height / uplink -> nprocs + 1 ) *mynumber;
+		
+	}
+	for ( size_t process = process < matrix -> height % uplink -> nprocs; 
+			process < uplinkk -> nprocs; 
+			process++) {
+		counts[process] = (matrix -> height / uplink -> nprocs) *mynumber;;
+	}
+	return counts;
+}
+
+int * mpiMatrix_genDispl( struct mpiMatrix * matrix , struct mpi_com *uplink, int * counts) {
+	int *displ = calloc( uplink->nprocs, sizeof(int));
+	displ[0] = 0;
+	for ( size_t process = 1 ; 
+			process < uplinkk -> nprocs; 
+			process++) {
+		displ[process] += counts[process-1];
+	}
+	return displ;
 }
 
 double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink) {
@@ -42,7 +72,7 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 		size_t serialIndex = 0;
 		for( size_t column = 0 ; column < widthLocal ; column ++ ){
 			size_t matrixIndex = column * matrix -> height + process * vectorLength + startindex;
-			memcpy ( & serialisedArray[serialIndex] , matrix->data[matrixIndex], vectorLength *sizeof(double));
+			memcpy ( & serialisedArray[serialIndex] , & matrix->data[matrixIndex], vectorLength *sizeof(double));
 			serialIndex += vectorLength;
 		}
 	}
@@ -54,7 +84,7 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 		for( size_t column = 0 ; column < widthLocal ; column ++ ){
 			size_t index = column * matrix -> height + process * vectorLength + startindex;
 			size_t matrixIndex = column * matrix -> height + process * vectorLength + startindex;
-			memcpy ( & serialisedArray[serialIndex] , matrix->data[matrixIndex], vectorLength *sizeof(double));
+			memcpy ( & serialisedArray[serialIndex] , & matrix->data[matrixIndex], vectorLength *sizeof(double));
 			serialIndex += vectorLength;
 		}
 	}
@@ -63,28 +93,38 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, strict mpi_com *uplink){ 
 	double * cVectors = malloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
 	for ( size_t column = 0 ;  column <matrix-> widthLocal ; column++){
+		size_t offset = 0;
 		for ( size_t process = 0 ; 
 				process < matrix -> height % uplink -> nprocs; 
 				process++) {
-			size_t localHeight = matrix -> height / uplink -> nprocs +1 ; 
+			size_t localHeight = matrix -> height / uplink -> nprocs + 1; 
 			for ( size_t localRow = 0 ; localRow < localHeight ;
 					localRow++ ){
-				cVectors[ column * matrix -> height 
-					+ process * localHeight 
-					+ localRow ] 
-					= data[ process 
-					+ 
-					+ localRow * matrix -> localwidth ]
+				cVectors[offset
+					+ localRow
+					+ column*matrix -> height ] 
+					= 
+					data[ offset
+					+localRow
+					+column*localHeight ];
 			}
+			offset += localHeigth;
 		}
 		for ( size_t process = process < matrix -> height % uplink -> nprocs; 
 				process < uplinkk -> nprocs; 
 				process++) {
-			size_t localHeight = matrix -> height / uplink -> nprocs +1 ; 
-			for ( size_t localRow = 0 ; 
-					localRow < localHeight ;
+			size_t localHeight = matrix -> height / uplink -> nprocs + 1; 
+			for ( size_t localRow = 0 ; localRow < localHeight ;
 					localRow++ ){
+				cVectors[offset
+					+ localRow
+					+ column*matrix -> height ] 
+					= 
+					data[ offset
+					+localRow
+					+column*localHeight ];
 			}
+			offset += localHeigth;
 		}
 	}
 }
