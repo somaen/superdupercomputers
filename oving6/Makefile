@@ -1,12 +1,12 @@
 OS=$(shell uname)
 iskongull=$(shell hostname)
 libs=-lmpi
-cflags=-Werror -Weverything -pedantic 
+cflags=-Weverything -pedantic 
 compile=-c
 kongull=
 std=-std=gnu99
 openmpcc = gcc
-openmpcflags = -Werror -Wall -pedantic -fopenmp
+openmpcflags =-Wall -pedantic -fopenmp
 
 ifeq ($(OS),Linux)
 	cc=clang
@@ -22,6 +22,10 @@ ifeq ($(iskongull),rocks.hpc.ntnu.no)
 	cc=gcc
 	includedir=-I/opt/openmpi/include/
 	includelibs=-L/opt/openmpi/lib/
-	cflags=-Werror -Wall -pedantic 
+	#cflags=-Werror -Wall -pedantic 
 endif
 
+all: mpiMatrix
+
+mpiMatrix: mpiMatrix.c mpi.com.c
+	$(cc) $(cflags) $(std) $(includedir) $(includelibs) $(libs)  mpiMatrix.c mpi.com.c -o mpiMatrix	
