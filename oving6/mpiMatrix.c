@@ -31,6 +31,64 @@ int main(int argc, char** argv){
 	return 0;
 }
 
+double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink) {
+	size_t size = matrix -> widthLocal*matrix->height;
+	double serialisedArray = calloc( size, sizeof(double));
+	for (size_t process = 0; 
+			process < ( length % uplink->nprocs ); 
+			process++) {
+		size_t startindex = 0;
+		size_t vectorLength = (matrix -> height / uplink->nprocs + 1);
+		size_t serialIndex = 0;
+		for( size_t column = 0 ; column < widthLocal ; column ++ ){
+			size_t matrixIndex = column * matrix -> height + process * vectorLength + startindex;
+			memcpy ( & serialisedArray[serialIndex] , matrix->data[matrixIndex], vectorLength *sizeof(double));
+			serialIndex += vectorLength;
+		}
+	}
+	for (size_t process = (matrix -> height % uplink -> nprocs); 
+			process < uplink->nprocs; 
+			process++) {
+		size_t startindex = matrix -> heigth % uplink -> nprocs ;
+		size_t vectorLength = (matrix -> height / uplink->nprocs);
+		for( size_t column = 0 ; column < widthLocal ; column ++ ){
+			size_t index = column * matrix -> height + process * vectorLength + startindex;
+			size_t matrixIndex = column * matrix -> height + process * vectorLength + startindex;
+			memcpy ( & serialisedArray[serialIndex] , matrix->data[matrixIndex], vectorLength *sizeof(double));
+			serialIndex += vectorLength;
+		}
+	}
+}
+
+double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, strict mpi_com *uplink){ 
+	double * cVectors = malloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
+	for ( size_t column = 0 ;  column <matrix-> widthLocal ; column++){
+		for ( size_t process = 0 ; 
+				process < matrix -> height % uplink -> nprocs; 
+				process++) {
+			size_t localHeight = matrix -> height / uplink -> nprocs +1 ; 
+			for ( size_t localRow = 0 ; localRow < localHeight ;
+					localRow++ ){
+				cVectors[ column * matrix -> height 
+					+ process * localHeight 
+					+ localRow ] 
+					= data[ process 
+					+ 
+					+ localRow * matrix -> localwidth ]
+			}
+		}
+		for ( size_t process = process < matrix -> height % uplink -> nprocs; 
+				process < uplinkk -> nprocs; 
+				process++) {
+			size_t localHeight = matrix -> height / uplink -> nprocs +1 ; 
+			for ( size_t localRow = 0 ; 
+					localRow < localHeight ;
+					localRow++ ){
+			}
+		}
+	}
+}
+
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink){
 	struct mpiMatrix *matrix = calloc(1, sizeof(struct mpiMatrix));
 	size_t widthLocal = width / uplink.nprocs + ((uplink.rank > (width%uplink.nprocs)) ? 1:0);
