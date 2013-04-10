@@ -117,7 +117,7 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 			}
 			offset += localHeight;
 		}
-		for ( size_t process = process < matrix -> height % uplink -> nprocs; 
+		for ( size_t process =  matrix -> height % uplink -> nprocs; 
 				process < uplink -> nprocs; 
 				process++) {
 			size_t localHeight = matrix -> height / uplink -> nprocs + 1; 
@@ -127,7 +127,7 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 					+ localRow
 					+ column*matrix -> height ] 
 					= 
-					data[ offset
+					data[ displacements[process]
 					+localRow
 					+column*localHeight ];
 			}
