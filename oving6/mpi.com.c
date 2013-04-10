@@ -50,9 +50,10 @@ double reducePlus(double *Vector, int length) {
 	return acc;
 }
 
-void printdoubleVetor(double *Vector, int length) {
+void printDoubleVector(double *Vector, int length) {
 	for (int i = 0; i < length ; i++) {
 		printf("%lf", Vector[i]);
 	}
 	printf("\n");
 }
+

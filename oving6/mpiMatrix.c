@@ -15,8 +15,12 @@ struct mpiMatrix{
 
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink);
 double *getVector(struct mpiMatrix, size_t column);
+void populate( struct mpiMatrix * matrix , struct mpi_com *uplink);
+int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink);
+double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink);
+
 void populate( struct mpiMatrix * matrix , struct mpi_com *uplink) {
-	for ( int i = 0 ; i < matrix -> widthLocal*matrix->height ; i++ ){
+	for ( size_t i = 0 ; i < matrix -> widthLocal*matrix->height ; i++ ){
 		matrix -> data[i] = uplink->rank;
 	}
 }
@@ -31,7 +35,7 @@ int main(int argc, char** argv){
 }
 
 int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink) {
-	int mynumber = matrix -> height /  uplink -> nprocs;
+	size_t mynumber = matrix -> height /  uplink -> nprocs;
 	if ( uplink->rank<( matrix -> height % uplink -> nprocs)){
 		mynumber +=1;
 	}
@@ -45,7 +49,7 @@ int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink) {
 	for ( size_t process = process < matrix -> height % uplink -> nprocs; 
 			process < uplink -> nprocs; 
 			process++) {
-		counts[process] = (matrix -> height / uplink -> nprocs) *mynumber;;
+		counts[process] = (matrix -> height / uplink -> nprocs) *mynumber;
 	}
 	return counts;
 }
