@@ -95,8 +95,8 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 	return serialisedArray;
 }
 
-double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, strict mpi_com *uplink){ 
-	double * cVectors = malloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
+double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, struct mpi_com *uplink) {
+	double * cVectors = calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
 	int * sendcounts = mpiMatrix_genCounts( matrix , uplink);
 	int * displacements = mpiMatrix_genDispl( matrix , uplink, sendcounts);
 	for ( size_t column = 0 ;  column <matrix-> widthLocal ; column++){
