@@ -23,12 +23,48 @@ void transpose(Real **bt, Real **b, int m);
 void fst_(Real *v, int *n, Real *w, int *nn); // Vector, Array Length, Auxiliary Memory, Length
 void fstinv_(Real *v, int *n, Real *w, int *nn);
 
-void FST_wrap(Real *v, int n, Real *w, int nn) {
-	fst_(v, &n, w, &nn);
+void FST_wrap_m(Real **v, int n, Real *w, int nn, int m) {
+	int i = 0;
+	for (i = 0; i < m; i++) {
+		fst_(v[i], &n, w, &nn);
+	}
 }
 
-void FSTINV_wrap(Real *v, int n, Real *w, int nn) {
-	fstinv_(v, &n, w, &nn);
+void FSTINV_wrap_m(Real **v, int n, Real *w, int nn, int m) {
+	int i = 0;
+	for (i = 0; i < m; i++) {
+		fstinv_(v, &n, w, &nn);
+	}
+}
+
+Real *createDiag(int m, Real n) {
+	int i = 0;
+	Real *diag = createRealArray(m);
+	for (i = 0; i < m; i++) {
+		diag[i] = 2.*(1. - cos((i + 1) * M_PI / (Real)n));
+	}
+	return diag;
+}
+
+void FillReal2DArray(Real *array, int m, Real value) {
+	int i, j;
+	for (i = 0; i < m; i++) {
+		for (j = 0; j < m; j++) {
+			array[i][j] = value;
+		}
+	}
+}
+
+Real FindMaxIn2DArray(Real *array, int m) {
+	Real umax = 0.0;
+	for (j = 0; j < m; j++) {
+		for (i = 0; i < m; i++) {
+			if (b[j][i] > umax) {
+				umax = b[j][i];
+			}
+		}
+	}
+	return umax;
 }
 
 int main(int argc, char **argv) {
@@ -49,30 +85,20 @@ int main(int argc, char **argv) {
 	m  = n - 1;
 	nn = 4 * n;
 
-	diag = createRealArray(m);
+	diag = createDiag(m, n);
 	b    = createReal2DArray(m, m);
 	bt   = createReal2DArray(m, m);
 	z    = createRealArray(nn);
 
 	h    = 1. / (Real)n;
 
-	for (i = 0; i < m; i++) {
-		diag[i] = 2.*(1. - cos((i + 1) * M_PI / (Real)n));
-	}
-	for (j = 0; j < m; j++) {
-		for (i = 0; i < m; i++) {
-			b[j][i] = h * h;
-		}
-	}
-	for (j = 0; j < m; j++) {
-		FST_wrap(b[j], n, z, nn);
-	}
+	FillReal2DArray(b, m, h * h);
+
+	FST_wrap_m(b, n, z, nn, m);
 
 	transpose(bt, b, m);
 
-	for (i = 0; i < m; i++) {
-		FSTINV_wrap(bt[i], n, z, nn);
-	}
+	FSTINV_wrap_m(bt, n, z, nn, m);
 
 	for (j = 0; j < m; j++) {
 		for (i = 0; i < m; i++) {
@@ -80,24 +106,14 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	for (i = 0; i < m; i++) {
-		FST_wrap(bt[i], n, z, nn);
-	}
+	FST_wrap_m(bt, n, z, nn, m);
 
 	transpose(b, bt, m);
 
-	for (j = 0; j < m; j++) {
-		FSTINV_wrap(b[j], n, z, nn);
-	}
+	FSTINV_wrap_m(b, n, z, nn, m);
 
-	umax = 0.0;
-	for (j = 0; j < m; j++) {
-		for (i = 0; i < m; i++) {
-			if (b[j][i] > umax) {
-				umax = b[j][i];
-			}
-		}
-	}
+	umax = FindMaxIn2DArray(b, m);
+
 	printf(" umax = %e \n", umax);
 }
 
