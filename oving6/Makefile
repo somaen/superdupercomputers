@@ -6,6 +6,7 @@ compile=-c
 kongull=
 std=-std=gnu99
 openmpcc = gcc
+debug=-g
 openmpcflags =-Wall -pedantic -fopenmp
 
 ifeq ($(OS),Linux)
@@ -28,4 +29,8 @@ endif
 all: mpiMatrix
 
 mpiMatrix: mpiMatrix.c mpi.com.c
-	$(cc) $(cflags) $(std) $(includedir) $(includelibs) $(libs)  mpiMatrix.c mpi.com.c -o mpiMatrix	
+	$(cc) $(cflags) $(std) $(includedir) $(includelibs) $(libs)  -Dstandalone mpiMatrix.c mpi.com.c -o mpiMatrix	
+
+poisson: mpiMatrix.c mpi.com.c poisson.c
+	$(cc) $(cflags) $(debug)  $(std) $(includedir) $(includelibs) $(libs)  mpiMatrix.c mpi.com.c poisson.c -o poisson	
+
