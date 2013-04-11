@@ -47,7 +47,7 @@ int * mpiMatrix_genDispl(struct mpi_com *uplink, int * counts) {
 	for ( size_t process = 1 ; 
 			process < uplink -> nprocs; 
 			process++) {
-		displ[process] += counts[process-1];
+		displ[process] = displ[process-1]+ counts[process-1];
 	}
 	return displ;
 }
@@ -85,18 +85,14 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 	double * cVectors = calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
 	int * sendcounts = mpiMatrix_genCounts( matrix , uplink);
 	int * displacements = mpiMatrix_genDispl( uplink, sendcounts);
-	printf("initialised data\n");
 	for ( size_t column = 0 ;  column <matrix-> widthLocal ; column++){
-		printf("\n--Starting loop\n");
 		size_t offset = 0;
 		for ( size_t process = 0 ; 
 				process < matrix -> height % uplink -> nprocs; 
 				process++) {
-			printf("first middle loop starting");
 			size_t localHeight = matrix -> height / uplink -> nprocs + 1; 
 			for ( size_t localRow = 0 ; localRow < localHeight ;
 					localRow++ ){
-				printf("first inner loop starting");
 				cVectors[offset
 					+ localRow
 					+ column*matrix -> height ] 
@@ -110,11 +106,9 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 		for ( size_t process =  matrix -> height % uplink -> nprocs; 
 				process < uplink -> nprocs; 
 				process++) {
-			printf("second middle loop starting");
 			size_t localHeight = matrix -> height / uplink -> nprocs; 
 			for ( size_t localRow = 0 ; localRow < localHeight ;
 					localRow++ ){
-				printf("second inner loop starting");
 				cVectors[offset
 					+ localRow
 					+ column*matrix -> height ] 
@@ -126,13 +120,12 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 			offset += localHeight;
 		}
 	}
-	printf("loops ended");
 	return cVectors;
 }
 
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink){
 	struct mpiMatrix *matrix = calloc(1, sizeof(struct mpiMatrix));
-	size_t widthLocal = width / uplink.nprocs + ((uplink.rank > (width%uplink.nprocs)) ? 1:0);
+	size_t widthLocal = width / uplink.nprocs + ((uplink.rank < (width%uplink.nprocs)) ? 1:0);
 	size_t offset;
 
 	if ( uplink.rank>= ( width % uplink.nprocs )){
