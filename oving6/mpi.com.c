@@ -9,7 +9,7 @@ void mpi_com_Init(struct mpi_com *uplink, int *argc, char ***argv) {
 	MPI_Comm_size(MPI_COMM_WORLD, &inprocs);
 	uplink->rank = (size_t)irank;
 	uplink->nprocs = (size_t)inprocs;
-	fprintf( stderr,"rank: %zd nprocs: %zd\n", uplink->rank, uplink->nprocs);
+	//fprintf( stderr,"rank: %zd nprocs: %zd\n", uplink->rank, uplink->nprocs);
 }
 
 void mpi_com_Finalize(void) {

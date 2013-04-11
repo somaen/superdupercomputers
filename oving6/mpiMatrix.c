@@ -3,10 +3,29 @@
 #include "mpiMatrix.h"
 
 
+void mpiMatrix_print( struct mpiMatrix * matrix , struct mpi_com *uplink) {
+	for ( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
+		for ( size_t row = 0 ; row < matrix -> height ; row++){
+			printf("%.0lf ", matrix -> data[column*matrix->height + row ]);
+		}
+		printf("\n");
+	}
+}
 
 void populate( struct mpiMatrix * matrix , struct mpi_com *uplink) {
-	for ( size_t i = 0 ; i < matrix -> widthLocal*matrix->height ; i++ ){
-		matrix -> data[i] = uplink->rank;
+	int * counts =  mpiMatrix_genCounts(matrix, uplink);
+	int * displ =  mpiMatrix_genDispl(uplink, counts);
+	//printf("rank: %zu nprocs: %zu\n", uplink -> rank , uplink -> nprocs );
+	for ( size_t i = 0 ; i < matrix -> widthLocal; i++ ){
+		for ( size_t j = 0 ; j < matrix->height ; j++ ){
+			matrix -> data[
+				matrix->height*i 
+				+j] 
+				= 
+				displ[uplink->rank] 
+				+ j 
+				+ i*matrix->height;
+		}
 	}
 }
 
@@ -127,17 +146,18 @@ struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com upl
 	struct mpiMatrix *matrix = calloc(1, sizeof(struct mpiMatrix));
 	size_t widthLocal = width / uplink.nprocs + ((uplink.rank < (width%uplink.nprocs)) ? 1:0);
 	size_t offset;
+	/*
 
-	if ( uplink.rank>= ( width % uplink.nprocs )){
+	if ( uplink . rank >= ( width % uplink.nprocs )){
 		offset = (width%uplink.nprocs) * (width / uplink.nprocs+1);
 		offset += (uplink.nprocs- (width%uplink.nprocs))*(width / uplink.nprocs+1);
 	}
 	else{
 		offset = (width%uplink.nprocs) * (width / uplink.nprocs+1);
-	}
+	}*/
 
 	matrix->data= calloc(height*width, sizeof(double));
-	matrix->widthOffset = offset;
+	//matrix->widthOffset = offset;
 	matrix->width = widthLocal;
 	matrix->widthLocal = widthLocal;
 	matrix->height = height;

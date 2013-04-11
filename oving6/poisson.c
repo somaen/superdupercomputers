@@ -7,15 +7,10 @@ size_t poisson(size_t dimension, struct mpi_com *uplink){
 
 	struct mpiMatrix * matrix = mpiMatrix_ctor( (size_t)dimension , (size_t)dimension, *uplink );
 	populate(matrix, uplink);
-	printf("\n "); 
 	double * packed = mpiMatrix_serialiseForSending(matrix, uplink);
-	/*printf("%zu: \n", uplink -> rank );
-	for ( size_t j = 0 ; j < matrix -> widthLocal ; j++ ){
-		for ( size_t i = 0 ; i < matrix -> height ; i++){	
-			printf("%.0lf ",matrix -> data[ i ]); 
-		}
-		printf("\n");
-	}*/
+	sleep(uplink -> rank*3);
+	printf("%zu: \n", uplink -> rank );
+	mpiMatrix_print(matrix,uplink);
 
 	int * SRcounts = mpiMatrix_genCounts(matrix, uplink);
 	int * SRdispl = mpiMatrix_genDispl(uplink, SRcounts);
@@ -24,21 +19,20 @@ size_t poisson(size_t dimension, struct mpi_com *uplink){
 	}
 	printf("\n");
 	MPI_Alltoallv( packed, SRcounts , SRdispl, MPI_DOUBLE, matrix -> data, SRcounts, SRdispl, MPI_DOUBLE,  uplink->comm);
+	mpiMatrix_deserialiseAfterReception(matrix , packed, uplink);
+	sleep(3);
 
+	sleep(uplink -> rank*3);
+	printf("%zu: \n", uplink -> rank );
+	mpiMatrix_print(matrix,uplink);
 	
-	printf("%zu: ", uplink -> rank );
-	for ( size_t j = 0 ; j < matrix -> widthLocal ; j++ ){
-		for ( size_t i = 0 ; i < matrix -> height ; i++){	
-			printf("%.0lf ",matrix -> data[ i ]); 
-		}
-		printf("\n");
-	}
 	mpiMatrix_deserialiseAfterReception(matrix, packed, uplink);
 	return matrix -> width;
 }
 int main(int argc, char ** argv){
 	struct mpi_com uplink;
 	mpi_com_Init(&uplink ,&argc, & argv);
+	//printf("rank: %zu nprocs: %zu\n", uplink . rank , uplink . nprocs );
 	poisson(10,  &uplink);
 	mpi_com_Finalize();
 	return 0;
