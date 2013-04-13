@@ -6,7 +6,7 @@
 void mpiMatrix_print( struct mpiMatrix * matrix , struct mpi_com *uplink) {
 	for ( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
 		for ( size_t row = 0 ; row < matrix -> height ; row++){
-			printf("%.0lf ", matrix -> data[column*matrix->height + row ]);
+			printf("%5.0lf ", matrix -> data[column*matrix->height + row ]);
 		}
 		printf("\n");
 	}
@@ -22,7 +22,7 @@ void populate( struct mpiMatrix * matrix , struct mpi_com *uplink) {
 				matrix->height*i 
 				+j] 
 				= 
-				displ[uplink->rank] 
+				uplink->rank * 1000
 				+ j 
 				+ i*matrix->height;
 		}
@@ -101,7 +101,7 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 }
 
 double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, struct mpi_com *uplink ){
-	double * cVectors = calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
+	double * cVectors = matrix -> data;//calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
 	int * sendcounts = mpiMatrix_genCounts( matrix , uplink);
 	int * displacements = mpiMatrix_genDispl( uplink, sendcounts);
 	for ( size_t column = 0 ;  column <matrix-> widthLocal ; column++){
@@ -109,16 +109,28 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 		for ( size_t process = 0 ; 
 				process < matrix -> height % uplink -> nprocs; 
 				process++) {
-			size_t localHeight = matrix -> height / uplink -> nprocs + 1; 
-			for ( size_t localRow = 0 ; localRow < localHeight ;
+			size_t localHeight = matrix -> height / uplink -> nprocs+1; 
+			for ( size_t localRow = 0 ; localRow < localHeight;
 					localRow++ ){
 				cVectors[offset
 					+ localRow
 					+ column*matrix -> height ] 
 					= 
 					data[ (size_t)displacements[ process ]
-					+localRow
-					+column*localHeight ];
+					+localRow*localHeight 
+					+column];
+				/*printf("%zu\n",
+						(size_t)displacements[ process ]
+						+localRow*localHeight 
+						+column
+					  );*/
+				if( uplink -> rank +1 == uplink -> nprocs ){
+					printf("%zu\n",
+							(size_t)displacements[ process ]
+							+localRow*localHeight 
+							+column
+						  );
+				}
 			}
 			offset += localHeight;
 		}
@@ -132,9 +144,16 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 					+ localRow
 					+ column*matrix -> height ] 
 					= 
-					data[ (size_t)displacements[process]
-					+localRow
-					+column*localHeight ];
+					data[ (size_t)displacements[ process ]
+					+localRow*localHeight 
+					+column];
+				if( uplink -> rank +1 == uplink -> nprocs ){
+					printf("%zu\n",
+							(size_t)displacements[ process ]
+							+localRow*localHeight 
+							+column
+						  );
+				}
 			}
 			offset += localHeight;
 		}
