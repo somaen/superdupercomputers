@@ -20,3 +20,4 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink);
 int * mpiMatrix_genDispl(struct mpi_com *uplink, int * counts);
 void mpiMatrix_transpose( struct mpiMatrix * matrix, struct mpi_com *uplink);
+void mpiMatrix_print( struct mpiMatrix * matrix , struct mpi_com *uplink);
