@@ -21,6 +21,8 @@ size_t poisson(size_t dimension, struct mpi_com *uplink){
 	size_t result = matrix->width;
 
 	mpiMatrix_dtor(matrix);
+	free(counts);
+	free(displ);
 
 	return result;
 }
