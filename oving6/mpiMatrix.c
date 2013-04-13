@@ -117,7 +117,7 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 					+ column*matrix -> height ] 
 					= 
 					data[ (size_t)displacements[ process ]
-					+localRow*localHeight 
+					+localRow*sendcounts[process]/localHeight 
 					+column];
 				/*printf("%zu\n",
 						(size_t)displacements[ process ]
@@ -127,7 +127,7 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 				if( uplink -> rank +1 == uplink -> nprocs ){
 					printf("%zu\n",
 							(size_t)displacements[ process ]
-							+localRow*localHeight 
+							+localRow*sendcounts[process]/localHeight 
 							+column
 						  );
 				}
@@ -145,12 +145,12 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 					+ column*matrix -> height ] 
 					= 
 					data[ (size_t)displacements[ process ]
-					+localRow*localHeight 
+					+localRow*sendcounts[process]/localHeight 
 					+column];
 				if( uplink -> rank +1 == uplink -> nprocs ){
 					printf("%zu\n",
 							(size_t)displacements[ process ]
-							+localRow*localHeight 
+							+localRow*sendcounts[process]/localHeight 
 							+column
 						  );
 				}

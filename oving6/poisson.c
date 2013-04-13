@@ -19,7 +19,7 @@ size_t poisson(size_t dimension, struct mpi_com *uplink){
 	}
 	printf("\n");
 	MPI_Alltoallv( packed, SRcounts , SRdispl, MPI_DOUBLE, matrix -> data, SRcounts, SRdispl, MPI_DOUBLE,  uplink->comm);
-	//matrix -> data = mpiMatrix_deserialiseAfterReception(matrix , matrix ->data, uplink);
+	matrix -> data = mpiMatrix_deserialiseAfterReception(matrix , matrix ->data, uplink);
 	
 	sleep(1);
 	int * counts = mpiMatrix_genCounts(matrix, uplink);
