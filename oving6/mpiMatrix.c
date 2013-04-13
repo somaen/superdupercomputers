@@ -27,6 +27,8 @@ void populate( struct mpiMatrix * matrix , struct mpi_com *uplink) {
 				+ i*matrix->height;
 		}
 	}
+	free(counts);
+	free(displ);
 }
 
 #ifdef standalone
@@ -36,6 +38,7 @@ int main(int argc, char** argv){
 	struct mpiMatrix * matrix = mpiMatrix_ctor(100,100, uplink); 
 	printf("%p\n", matrix );
 	mpi_com_Finalize();
+	mpiMatrix_dtor(matrix);
 	return 0;
 }
 #endif
