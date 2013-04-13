@@ -101,62 +101,15 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 }
 
 double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, struct mpi_com *uplink ){
-	double * cVectors = matrix -> data;//calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
+	double * cVectors = calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
 	int * sendcounts = mpiMatrix_genCounts( matrix , uplink);
 	int * displacements = mpiMatrix_genDispl( uplink, sendcounts);
-	for ( size_t column = 0 ;  column <matrix-> widthLocal ; column++){
-		size_t offset = 0;
-		for ( size_t process = 0 ; 
-				process < matrix -> height % uplink -> nprocs; 
-				process++) {
-			size_t localHeight = matrix -> height / uplink -> nprocs+1; 
-			for ( size_t localRow = 0 ; localRow < localHeight;
-					localRow++ ){
-				cVectors[offset
-					+ localRow
-					+ column*matrix -> height ] 
-					= 
-					data[ (size_t)displacements[ process ]
-					+localRow*sendcounts[process]/localHeight 
-					+column];
-				/*printf("%zu\n",
-						(size_t)displacements[ process ]
-						+localRow*localHeight 
-						+column
-					  );*/
-				if( uplink -> rank +1 == uplink -> nprocs ){
-					printf("%zu\n",
-							(size_t)displacements[ process ]
-							+localRow*sendcounts[process]/localHeight 
-							+column
-						  );
-				}
-			}
-			offset += localHeight;
-		}
-		for ( size_t process =  matrix -> height % uplink -> nprocs; 
-				process < uplink -> nprocs; 
-				process++) {
-			size_t localHeight = matrix -> height / uplink -> nprocs; 
-			for ( size_t localRow = 0 ; localRow < localHeight ;
-					localRow++ ){
-				cVectors[offset
-					+ localRow
-					+ column*matrix -> height ] 
-					= 
-					data[ (size_t)displacements[ process ]
-					+localRow*sendcounts[process]/localHeight 
-					+column];
-				if( uplink -> rank +1 == uplink -> nprocs ){
-					printf("%zu\n",
-							(size_t)displacements[ process ]
-							+localRow*sendcounts[process]/localHeight 
-							+column
-						  );
-				}
-			}
-			offset += localHeight;
-		}
+	for ( size_t index = 0; 
+			index <	matrix -> height *matrix -> widthLocal ; 
+			index ++ ){
+		size_t newcoord =  (index / matrix -> widthLocal ) + (index % matrix->widthLocal)*matrix->height;
+		//printf("%zu : %zu\n", index , newcoord);
+		cVectors[newcoord] = data [index];
 	}
 	return cVectors;
 }
