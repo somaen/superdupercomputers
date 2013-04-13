@@ -137,3 +137,21 @@ struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com upl
 	populate ( matrix , &uplink);
 	return matrix;
 }
+
+void mpiMatrix_dtor(struct mpiMatrix *matrix) {
+	free(matrix->data);
+	free(matrix);
+}
+
+void mpiMatrix_transpose( struct mpiMatrix * matrix, struct mpi_com *uplink) {
+	double * packed = mpiMatrix_serialiseForSending(matrix, uplink);
+	int * SRcounts = mpiMatrix_genCounts(matrix, uplink);
+	int * SRdispl = mpiMatrix_genDispl(uplink, SRcounts);
+
+	MPI_Alltoallv( packed, SRcounts , SRdispl, MPI_DOUBLE, matrix->data, SRcounts, SRdispl, MPI_DOUBLE,  uplink->comm);
+	matrix -> data = mpiMatrix_deserialiseAfterReception(matrix , matrix->data, uplink);
+
+	free(SRcounts);
+	free(SRdispl);
+}
+
