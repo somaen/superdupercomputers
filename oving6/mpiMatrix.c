@@ -10,7 +10,7 @@ struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mp
 	double scale  = 1./matrix -> height ;
 	for (size_t y = 0 ; y < matrix -> widthLocal ;y++){
 		for ( size_t x = 0 ; x < matrix -> height ; x++){
-			matrix -> data[y*matrix -> height + x ] = habitant(x, y+displ[uplink ->rank]/matrix -> width, scale);
+			matrix -> data[y*matrix -> height + x ] = habitant(x, y+(size_t)displ[uplink ->rank]/matrix -> width, scale);
 			//matrix -> data[(y+displ[uplink ->rank])*matrix -> height + x ] = uplink -> rank;
 		}
 	}
@@ -22,7 +22,7 @@ void mpiMatrix_fprint( struct mpiMatrix * matrix, const char * filename){
 	FILE *file = fopen(filename, "a");
 	for ( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
 		for ( size_t row = 0 ; row < matrix -> height ; row++){
-			fprintf(file,"%5.3lf ", matrix -> data[column*matrix->height + row ]);
+			fprintf(file,"%.16lf ", matrix -> data[column*matrix->height + row ]);
 		}
 		fprintf(file,"\n");
 	}
