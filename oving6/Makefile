@@ -31,6 +31,8 @@ all: mpiMatrix
 mpiMatrix: mpiMatrix.c mpi.com.c
 	$(cc) $(cflags) $(std) $(includedir) $(includelibs) $(libs)  -Dstandalone mpiMatrix.c mpi.com.c -o mpiMatrix	
 
-poisson: mpiMatrix.c mpi.com.c poisson.c
-	$(cc) $(cflags) $(debug)  $(std) $(includedir) $(includelibs) $(libs)  mpiMatrix.c mpi.com.c poisson.c -o poisson	
+poisson: mpiMatrix.c mpi.com.c poisson.c fst
+	$(cc) $(cflags) $(debug)  $(std) $(includedir) $(includelibs) $(libs)  mpiMatrix.c mpi.com.c poisson.c fst.o -o poisson	
 
+fst: fst.f
+	gfortran -c fst.f

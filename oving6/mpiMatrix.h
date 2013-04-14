@@ -11,14 +11,15 @@ struct mpiMatrix{
 };
 
 void mpiMatrix_prettyPrint( struct mpiMatrix * matrix , struct mpi_com *uplink);
-struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mpi_com uplink, void (*habitant)(double, double));
+struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mpi_com *uplink, double (*habitant)(size_t, size_t, double));
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink);
 void mpiMatrix_dtor(struct mpiMatrix *matrix);
 double *getVector(struct mpiMatrix, size_t column);
 void populate( struct mpiMatrix * matrix , struct mpi_com *uplink);
 int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink);
 double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink);
-double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, struct mpi_com *uplink);
+double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data);//, struct mpi_com *uplink ){
+//double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, struct mpi_com *uplink);
 int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink);
 int * mpiMatrix_genDispl(struct mpi_com *uplink, int * counts);
 void mpiMatrix_transpose( struct mpiMatrix * matrix, struct mpi_com *uplink);

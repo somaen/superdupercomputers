@@ -3,23 +3,26 @@
 #include "mpiMatrix.h"
 
 
-struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mpi_com uplink, void (*habitant)(double, double)){
+struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mpi_com *uplink, double (*habitant)(size_t, size_t, double)){
+	struct mpiMatrix *matrix = mpiMatrix_ctor(height, width, *uplink);
 	int * counts = mpiMatrix_genCounts(matrix, uplink);
 	int * displ= mpiMatrix_genDispl(uplink, counts);
 	double scale  = 1./matrix -> height ;
-	for ( int x = 0 ; x < matrix -> height ; x++){
-		for ( int y = displ[uplink ->rank] ; y < displ[uplink ->rank + 1]; y++){
-			habitant(x*scale, y*scale);
+	for (size_t y = 0 ; y < matrix -> widthLocal ;y++){
+		for ( size_t x = 0 ; x < matrix -> height ; x++){
+			matrix -> data[y*matrix -> height + x ] = habitant(x, y+displ[uplink ->rank]/matrix -> width, scale);
+			//matrix -> data[(y+displ[uplink ->rank])*matrix -> height + x ] = uplink -> rank;
 		}
 	}
-	free(counts);
-	free(displ);
+	//free(counts);
+	//free(displ);
+	return matrix;
 }
 
 void mpiMatrix_print( struct mpiMatrix * matrix ){
 	for ( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
 		for ( size_t row = 0 ; row < matrix -> height ; row++){
-			printf("%5.0lf ", matrix -> data[column*matrix->height + row ]);
+			printf("%5.3lf ", matrix -> data[column*matrix->height + row ]);
 		}
 		printf("\n");
 	}
@@ -33,9 +36,6 @@ void mpiMatrix_prettyPrint( struct mpiMatrix * matrix , struct mpi_com *uplink) 
 		}
 	}
 	MPI_Barrier(uplink ->comm);
-	if ( uplink -> rank == 0 ){
-		printf("------------------------\n");
-	}
 }
 
 void populate( struct mpiMatrix * matrix , struct mpi_com *uplink) {
@@ -129,10 +129,8 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 	return serialisedArray;
 }
 
-double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data, struct mpi_com *uplink ){
+double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data){//, struct mpi_com *uplink ){
 	double * cVectors = calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
-	int * sendcounts = mpiMatrix_genCounts( matrix , uplink);
-	int * displacements = mpiMatrix_genDispl( uplink, sendcounts);
 	for ( size_t index = 0; 
 			index <	matrix -> height *matrix -> widthLocal ; 
 			index ++ ){
@@ -146,7 +144,7 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink){
 	struct mpiMatrix *matrix = calloc(1, sizeof(struct mpiMatrix));
 	size_t widthLocal = width / uplink.nprocs + ((uplink.rank < (width%uplink.nprocs)) ? 1:0);
-	size_t offset;
+	//size_t offset;
 	/*
 
 	if ( uplink . rank >= ( width % uplink.nprocs )){
@@ -178,7 +176,7 @@ void mpiMatrix_transpose( struct mpiMatrix * matrix, struct mpi_com *uplink) {
 	int * SRdispl = mpiMatrix_genDispl(uplink, SRcounts);
 
 	MPI_Alltoallv( packed, SRcounts , SRdispl, MPI_DOUBLE, matrix->data, SRcounts, SRdispl, MPI_DOUBLE,  uplink->comm);
-	matrix -> data = mpiMatrix_deserialiseAfterReception(matrix , matrix->data, uplink);
+	matrix -> data = mpiMatrix_deserialiseAfterReception(matrix , matrix->data);
 
 	free(SRcounts);
 	free(SRdispl);
