@@ -3,12 +3,38 @@
 #include "mpiMatrix.h"
 
 
-void mpiMatrix_print( struct mpiMatrix * matrix , struct mpi_com *uplink) {
+struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mpi_com uplink, void (*habitant)(double, double)){
+	int * counts = mpiMatrix_genCounts(matrix, uplink);
+	int * displ= mpiMatrix_genDispl(uplink, counts);
+	double scale  = 1./matrix -> height ;
+	for ( int x = 0 ; x < matrix -> height ; x++){
+		for ( int y = displ[uplink ->rank] ; y < displ[uplink ->rank + 1]; y++){
+			habitant(x*scale, y*scale);
+		}
+	}
+	free(counts);
+	free(displ);
+}
+
+void mpiMatrix_print( struct mpiMatrix * matrix ){
 	for ( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
 		for ( size_t row = 0 ; row < matrix -> height ; row++){
 			printf("%5.0lf ", matrix -> data[column*matrix->height + row ]);
 		}
 		printf("\n");
+	}
+}
+
+void mpiMatrix_prettyPrint( struct mpiMatrix * matrix , struct mpi_com *uplink) {
+	for ( size_t process = 0; process < uplink -> nprocs ; process ++ ){
+		MPI_Barrier(uplink -> comm );
+		if ( process == uplink -> rank ){
+			mpiMatrix_print(matrix);
+		}
+	}
+	MPI_Barrier(uplink ->comm);
+	if ( uplink -> rank == 0 ){
+		printf("------------------------\n");
 	}
 }
 

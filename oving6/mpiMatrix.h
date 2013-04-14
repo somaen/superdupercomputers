@@ -10,6 +10,8 @@ struct mpiMatrix{
 	double *data;
 };
 
+void mpiMatrix_prettyPrint( struct mpiMatrix * matrix , struct mpi_com *uplink);
+struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mpi_com uplink, void (*habitant)(double, double));
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink);
 void mpiMatrix_dtor(struct mpiMatrix *matrix);
 double *getVector(struct mpiMatrix, size_t column);
@@ -20,4 +22,4 @@ double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double *
 int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink);
 int * mpiMatrix_genDispl(struct mpi_com *uplink, int * counts);
 void mpiMatrix_transpose( struct mpiMatrix * matrix, struct mpi_com *uplink);
-void mpiMatrix_print( struct mpiMatrix * matrix , struct mpi_com *uplink);
+void mpiMatrix_print( struct mpiMatrix * matrix );
