@@ -1,6 +1,6 @@
 OS=$(shell uname)
 iskongull=$(shell hostname)
-libs=-lmpi
+libs=-lmpi -lm
 cflags=-Weverything -pedantic 
 compile=-c
 kongull=
@@ -29,10 +29,10 @@ endif
 all: mpiMatrix
 
 mpiMatrix: mpiMatrix.c mpi.com.c
-	$(cc) $(cflags) $(std) $(includedir) $(includelibs) $(libs)  -Dstandalone mpiMatrix.c mpi.com.c -o mpiMatrix	
+	$(cc) -Dstandalone mpiMatrix.c mpi.com.c -o mpiMatrix	 $(cflags) $(std) $(includedir) $(includelibs) $(libs)  
 
 poisson: mpiMatrix.c mpi.com.c poisson.c fst
-	$(cc) $(cflags) $(debug)  $(std) $(includedir) $(includelibs) $(libs)  mpiMatrix.c mpi.com.c poisson.c fst.o -o poisson	
+	$(cc) mpiMatrix.c mpi.com.c poisson.c fst.o -o poisson	$(cflags) $(debug)  $(std) $(includedir) $(includelibs) $(libs)  
 
 fst: fst.f
 	gfortran -c fst.f

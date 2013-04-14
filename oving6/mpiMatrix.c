@@ -18,6 +18,33 @@ struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mp
 	//free(displ);
 	return matrix;
 }
+void mpiMatrix_fprint( struct mpiMatrix * matrix, const char * filename){
+	FILE *file = fopen(filename, "a");
+	for ( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
+		for ( size_t row = 0 ; row < matrix -> height ; row++){
+			fprintf(file,"%5.3lf ", matrix -> data[column*matrix->height + row ]);
+		}
+		fprintf(file,"\n");
+	}
+	fflush(file);
+	fclose(file);
+}
+
+void mpiMatrix_fprettyPrint( struct mpiMatrix * matrix , struct mpi_com *uplink, const char * filename) {
+	if (uplink -> rank == 0){
+		FILE *file = fopen(filename, "w");
+		fflush(file);
+		fclose(file);
+	}
+	for ( size_t process = 0; process < uplink -> nprocs ; process ++ ){
+		MPI_Barrier(uplink -> comm );
+		if ( process == uplink -> rank ){
+			mpiMatrix_fprint(matrix,filename);
+		}
+	}
+	MPI_Barrier(uplink ->comm);
+}
+
 
 void mpiMatrix_print( struct mpiMatrix * matrix ){
 	for ( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){

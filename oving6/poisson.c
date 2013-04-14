@@ -97,8 +97,8 @@ static void catch_function(int signal) {
 	exit(0);
 }
 
-size_t poisson(size_t dimension, struct mpi_com *uplink);
-size_t poisson(size_t dimension, struct mpi_com *uplink){
+size_t poisson(size_t dimension, struct mpi_com *uplink, const char * resultname, const char *logfile);
+size_t poisson(size_t dimension, struct mpi_com *uplink, const char * resultname, const char *logfile){
 	struct mpiMatrix * matrix = mpiMatrix_ctor_habitate( (size_t)dimension , (size_t)dimension, uplink , populator);
 	
 
@@ -108,7 +108,7 @@ size_t poisson(size_t dimension, struct mpi_com *uplink){
 	// Torje: Jeg kommenterte denne enda mer ut fordi jeg har populert allerede//mpiMatrix_fillValue(matrix, uplink -> rank);
 
 	// TODO: FST
-	mpiMatrix_prettyPrint(matrix, uplink);
+	//mpiMatrix_prettyPrint(matrix, uplink);
 	mpiMatrix_rowfst(matrix);
 
 	// Torje: Jeg kommenterte denne enda mer ut fordi jeg har populert allerede//populate(matrix, uplink);
@@ -133,7 +133,9 @@ size_t poisson(size_t dimension, struct mpi_com *uplink){
 
 	// TODO: mpiMatrix_findMax(matrix);
 
-	mpiMatrix_prettyPrint(matrix, uplink);
+	//mpiMatrix_prettyPrint(matrix, uplink);
+	
+	mpiMatrix_fprettyPrint(matrix, uplink, resultname);
 
 	int * counts = mpiMatrix_genCounts(matrix, uplink);
 	int * displ = mpiMatrix_genDispl(uplink, counts);
@@ -155,7 +157,7 @@ int main(int argc, char ** argv){
 //	signal(SIGABRT, catch_function);
 	mpi_com_Init(&uplink ,&argc, & argv);
 	//printf("rank: %zu nprocs: %zu\n", uplink . rank , uplink . nprocs );
-	poisson((size_t)atoi(argv[1]),  &uplink);
+	poisson((size_t)atoi(argv[1]),  &uplink, argv[2], argv[3]);
 	mpi_com_Finalize();
 	return 0;
  }

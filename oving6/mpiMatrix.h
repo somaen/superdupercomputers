@@ -10,6 +10,8 @@ struct mpiMatrix{
 	double *data;
 };
 
+void mpiMatrix_fprettyPrint( struct mpiMatrix * matrix , struct mpi_com *uplink, const char * filename);
+void mpiMatrix_fprint( struct mpiMatrix * matrix, const char * filename);
 void mpiMatrix_prettyPrint( struct mpiMatrix * matrix , struct mpi_com *uplink);
 struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mpi_com *uplink, double (*habitant)(size_t, size_t, double));
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink);
