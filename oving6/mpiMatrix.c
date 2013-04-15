@@ -14,9 +14,42 @@ struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mp
 			//matrix -> data[(y+displ[uplink ->rank])*matrix -> height + x ] = uplink -> rank;
 		}
 	}
-	//free(counts);
-	//free(displ);
+	free(counts);
+	free(displ);
 	return matrix;
+}
+
+void mpiMatrix_divByDiag(struct mpiMatrix *matrix, double *diag) {
+	for (size_t i = 0; i < matrix -> widthLocal; i++) {
+		for (size_t j = 0; j < matrix->height; j++) {
+			matrix->data[matrix->height*i + j] = matrix->data[matrix->height*i + j] / (diag[i] + diag[j]);
+		}
+	}
+}
+
+
+double mpiMatrix_findMax(struct mpiMatrix *matrix) {
+	double umax = 0.0;
+	for (size_t i = 0; i < matrix -> widthLocal; i++) {
+		for (size_t j = 0; j < matrix->height; j++) {
+			if (matrix->data[matrix->height*i + j] > umax) {
+				umax = matrix->data[matrix->height*i + j];
+			}
+		}
+	}
+	return umax;
+}
+
+void mpiMatrix_fillValue(struct mpiMatrix *matrix, double value) {
+	for (size_t i = 0; i < matrix -> widthLocal; i++) {
+		for (size_t j = 0; j < matrix->height; j++) {
+			matrix->data[
+				matrix->height*i
+				+j]
+				=
+				value;
+		}
+	}
 }
 void mpiMatrix_fprint( struct mpiMatrix * matrix, const char * filename){
 	FILE *file = fopen(filename, "a");
@@ -183,6 +216,7 @@ struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com upl
 	}*/
 
 	matrix->data= calloc(height*width, sizeof(double));
+	matrix->aux= calloc(height*width, sizeof(double));
 	//matrix->widthOffset = offset;
 	matrix->width = widthLocal;
 	matrix->widthLocal = widthLocal;
@@ -194,6 +228,7 @@ struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com upl
 
 void mpiMatrix_dtor(struct mpiMatrix *matrix) {
 	free(matrix->data);
+	free(matrix->aux);
 	free(matrix);
 }
 

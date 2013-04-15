@@ -48,38 +48,6 @@ void FSTINV_wrap_m(double **v, int n, double *w, int nn, int m) {
 	}
 }*/
 
-void mpiMatrix_fillValue(struct mpiMatrix *matrix, double value) {
-	for (size_t i = 0; i < matrix -> widthLocal; i++) {
-		for (size_t j = 0; j < matrix->height; j++) {
-			matrix->data[
-				matrix->height*i
-				+j]
-				=
-				value;
-		}
-	}
-}
-
-double mpiMatrix_findMax(struct mpiMatrix *matrix) {
-	double umax = 0.0;
-	for (size_t i = 0; i < matrix -> widthLocal; i++) {
-		for (size_t j = 0; j < matrix->height; j++) {
-			if (matrix->data[matrix->height*i + j] > umax) {
-				umax = matrix->data[matrix->height*i + j];
-			}
-		}
-	}
-	return umax;
-}
-
-void mpiMatrix_divByDiag(struct mpiMatrix *matrix, double *diag) {
-	for (size_t i = 0; i < matrix -> widthLocal; i++) {
-		for (size_t j = 0; j < matrix->height; j++) {
-			matrix->data[matrix->height*i + j] = matrix->data[matrix->height*i + j] / (diag[i] + diag[j]);
-		}
-	}
-
-}
 
 double *createDiag(size_t m, size_t n) {
 	double *diag = (double *) calloc(m, sizeof(double));
@@ -97,15 +65,6 @@ double populator(size_t x, size_t y , double scale){
 size_t poisson(size_t dimension, struct mpi_com *uplink, const char * resultname, const char *logfile);
 size_t poisson(size_t dimension, struct mpi_com *uplink, const char * resultname, const char *logfile){
 	struct mpiMatrix * matrix = mpiMatrix_ctor_habitate( (size_t)dimension , (size_t)dimension, uplink , populator);
-
-	
-	
-	
-	
-	
-	
-	
-	
 
 	struct Precision_Timer divdiag;
 	struct Precision_Timer fsttimer2;
