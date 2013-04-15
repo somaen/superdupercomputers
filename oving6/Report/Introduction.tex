@@ -21,4 +21,9 @@ a banded matrix and can shave off \emph{n}$^2$ and achieve the same result in
 \emph{n}$^4$. 
 
 Using properties that is in our stencil, our discretisation of the Laplace
-operator, giving us that 
+operator, is itself transposed so we can use a three-point stencil both way,
+just swapping what side we multiply with, thereby making it work on rows and
+columns and removing an \emph{n} from our running time. 
+\begin{align}
+\mathrm{P}=\mathrm{TU+UT}
+\end{align}
