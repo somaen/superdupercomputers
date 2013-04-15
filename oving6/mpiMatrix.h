@@ -32,3 +32,7 @@ void mpiMatrix_swapDataAux(struct mpiMatrix *matrix);
 double mpiMatrix_findMax(struct mpiMatrix *matrix);
 void mpiMatrix_divByDiag(struct mpiMatrix *matrix, double *diag);
 void mpiMatrix_fillValue(struct mpiMatrix *matrix, double value);
+
+
+void mpiMatrix_rowfst(struct mpiMatrix *matrix);
+void mpiMatrix_rowifst(struct mpiMatrix *matrix);

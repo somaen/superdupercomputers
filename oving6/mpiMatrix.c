@@ -19,6 +19,32 @@ struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mp
 	return matrix;
 }
 
+// fst.f
+void fst_(double *vector, int *vector_length, double *aux_mem, int *aux_mem_length); // Vector, Array Length, Auxiliary Memory, Length
+void fstinv_(double *v, int *n, double *w, int *nn);
+
+void mpiMatrix_rowfst(struct mpiMatrix *matrix) {
+	int aux_mem_length = 4 * (int)matrix->height;
+	int vector_length = (int)matrix->height;
+	double *aux_mem =  calloc((size_t)aux_mem_length, sizeof(double));
+	for (size_t row = 0 ; row < matrix -> widthLocal ; row++) {
+		fst_(& matrix ->data [ row * matrix->height ] , &vector_length, aux_mem, &aux_mem_length);
+	}
+	free(aux_mem);
+}
+
+void mpiMatrix_rowifst(struct mpiMatrix *matrix) {
+	int aux_mem_length = 4 * (int)matrix->height;
+	int vector_length = (int)matrix->height;
+	double *aux_mem =  calloc((size_t)aux_mem_length, sizeof(double));
+	for (size_t row = 0 ; row < matrix -> widthLocal ; row++) {
+		fstinv_(& matrix ->data [ row * matrix->height ] , &vector_length, aux_mem, &aux_mem_length);
+	}
+	free(aux_mem);
+}
+
+
+
 void mpiMatrix_divByDiag(struct mpiMatrix *matrix, double *diag) {
 	for (size_t i = 0; i < matrix -> widthLocal; i++) {
 		for (size_t j = 0; j < matrix->height; j++) {
