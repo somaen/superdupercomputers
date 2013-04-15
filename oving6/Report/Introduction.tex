@@ -1,1 +1,17 @@
 \section{Introduction}
+Poisson's equation is a partial differential equation with broad utility in
+electrostatics, mechanical engineering and theoretical phsyics.\cite{wiki}
+
+\begin{align}
+	\Nabla^2 \psi &= f \\
+\end{align}
+
+We are considering this problem on a scale from 0 to 1 in both x and y
+direction with homogenouos dirichelet conditions amongst the edges, set to zero
+in our case. 
+
+\section{Solution strategies}
+Given that we have a supercomputer at our hands we could be tempted to just
+throw processing power on the problem untill it disappears, but a simple solver
+based on Elementary linear algebra would be very slow compared to other
+solutions. A solver using gaussian elimination would have a vector of unknowns being \emph{n} long
