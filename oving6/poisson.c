@@ -115,8 +115,10 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char * resultname
 	struct Precision_Timer transposetimer1;
 	struct Precision_Timer fsttimer1;
 	struct Precision_Timer diagTimer;
+	struct Precision_Timer total;
 	
 
+	PT_start(&total);
 	PT_start(&diagTimer);
 	double *diag = createDiag(dimension - 1, dimension);
 	PT_stop(&diagTimer);
@@ -160,9 +162,11 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char * resultname
 	PT_start(&ifsttimer2);
 	mpiMatrix_rowifst(matrix);
 	PT_stop(&ifsttimer2);
+	PT_stop(&total);
 
 	// TODO: mpiMatrix_findMax(matrix);
 
+	PT_diffTime(&total);
 	PT_diffTime( & divdiag);
 	PT_diffTime( & fsttimer2);
 	PT_diffTime( & transposetimer2);
@@ -186,6 +190,7 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char * resultname
 				fprintf(file, "transpose 1 in: "); print_timeval(&transposetimer1, file); fprintf(file, "\n");
 				fprintf(file, "fst 1 in :"); print_timeval(&fsttimer1, file); fprintf(file, "\n");
 				fprintf(file , "Created diagonal in: "); print_timeval(&diagTimer, file); fprintf(file, "\n");
+				fprintf(file , "Total: "); print_timeval(&total, file); fprintf(file, "\n");
 				fflush(file);
 				fclose(file);
 			}
