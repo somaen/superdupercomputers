@@ -1,0 +1,17 @@
+\section{Discussion}
+
+\TODO{a discussion of bottlenecks and possible optimization}
+
+Our program seems to have some variance in it's runtime, timing the various processes show values
+between 0.5 and 9 seconds, this stems from the fact that the processes are using blocking communication
+for the transpose, so the slowest process will delay the faster processes at these points, effectively creating
+2 bottlenecks in our runs (one for each of the matrix transposes).
+
+Our program is dominated by the (inverse) fast-sine-transform-calls runtime-wise, which we have little possibility
+to optimise any further. We also use a large amount of small functions to do the various tasks that are required to
+set up and manage the matrix, however, none of these are close to any tight loops, and most of them will be optimised
+by the compiler so that inlining this functionality would not create any further runtime-benefits, but instead make the
+code base less manageable.
+
+The decision to wrap the fortran-code into C-functions should also not have any effect on the runtime, for the same reason
+explained above, the functions will be link-time-optimised afterwards anyhow.
