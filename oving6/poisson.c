@@ -59,18 +59,15 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname,
 	double *diag = createDiag(dimension, dimension);
 	PT_stop(&diagTimer);
 
-	// Torje: Jeg kommenterte denne enda mer ut fordi jeg har populert allerede//mpiMatrix_fillValue(matrix, uplink -> rank);
-
-	// TODO: FST
+	// FST
 	mpiMatrix_rowfst(matrix);
 	PT_stop(&fsttimer1);
-	// Torje: Jeg kommenterte denne enda mer ut fordi jeg har populert allerede//populate(matrix, uplink);
-	//
+	
 	PT_start(&transposetimer1);
 	mpiMatrix_transpose(matrix, uplink);
 	PT_stop(&transposetimer1);
 
-	// TODO: FSTINV
+	// FSTINV
 	PT_start(&ifsttimer1);
 	mpiMatrix_rowifst(matrix);
 	PT_stop(&ifsttimer1);
@@ -79,23 +76,22 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname,
 	mpiMatrix_divByDiag(matrix, diag);
 	PT_stop(&divdiag);
 
-	// TODO FST
+	// FST
 	PT_start(&fsttimer2);
 	mpiMatrix_rowfst(matrix);
 	PT_stop(&fsttimer2);
 
-	//mpiMatrix_prettyPrint(matrix, uplink);
 	PT_start(&transposetimer2);
 	mpiMatrix_transpose(matrix, uplink);
 	PT_stop(&transposetimer2);
 
-	// TODO: FSTINV
+	// FSTINV
 	PT_start(&ifsttimer2);
 	mpiMatrix_rowifst(matrix);
 	PT_stop(&ifsttimer2);
 	PT_stop(&total);
 
-	// TODO: mpiMatrix_findMax(matrix);
+	// mpiMatrix_findMax(matrix);
 
 	PT_diffTime(&total);
 	PT_diffTime(& divdiag);
@@ -106,7 +102,6 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname,
 	PT_diffTime(& fsttimer1);
 	PT_diffTime(& diagTimer);
 	PT_diffTime(& transposetimer1);
-	//mpiMatrix_prettyPrint(matrix, uplink);
 	{
 		for (size_t process = 0; process < uplink -> nprocs ; process ++) {
 			MPI_Barrier(uplink -> comm);
