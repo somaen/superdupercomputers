@@ -1,7 +1,5 @@
 \section{Discussion}
 
-\TODO{a discussion of bottlenecks and possible optimization}
-
 Our program seems to have some variance in it's runtime, timing the various processes show values
 between 0.5 and 9 seconds, this stems from the fact that the processes are using blocking communication
 for the transpose, so the slowest process will delay the faster processes at these points, effectively creating

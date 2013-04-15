@@ -1,0 +1,16 @@
+\section{Kongull}
+
+The distributed memory computer we ran our program on is called Kongull, it consists of 93 compute nodes that each have the following specs:
+\begin{itemize}
+    \item 24/48 GiB RAM
+    \item 2x6 Core AMD Opteron 2431, each with the following specs:
+    \begin{itemize}
+        \item 2.4 GHz
+        \item 6x 128 L1 Cache
+        \item 6x 512 KiB L2 Cache
+        \item 6 MiB L3 Cache
+    \end{itemize}
+\end{itemize}
+
+Each of these nodes has 2 CPUs, that share memory, thus we enjoy the combination of shared memory computing AND distributed memory while
+running on this cluster.
