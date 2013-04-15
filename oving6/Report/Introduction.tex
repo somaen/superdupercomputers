@@ -21,9 +21,11 @@ a banded matrix and can shave off \emph{n}$^2$ and achieve the same result in
 \emph{n}$^4$. 
 
 Using properties that is in our stencil, our discretisation of the Laplace
-operator, is itself transposed so we can use a three-point stencil both way,
-just swapping what side we multiply with, thereby making it work on rows and
-columns and removing an \emph{n} from our running time. 
-\begin{align}
-\mathrm{P}=\mathrm{TU+UT}
-\end{align}
+operator, is itself transposed so we can use a three-point stencil: T, $\mathrm{PU}=\mathrm{TU+UT}$, which is
+the same as we use in two dimensions, both ways, just swapping what side we
+multiply with, then diagonalising T, putting us at \emph{n}$3$ floating point
+operations. A further improvement on this method can be done replacing a vector
+matrix product with a Fast sine transform, a transpose and a fast inverse sine
+transform landing us at $\log(n)\cdot n^2$. We are not attempting to further
+explain as we did not quite understand the diagonalisation part. 
+	
