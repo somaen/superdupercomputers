@@ -3,3 +3,10 @@ a.out
 *.o
 *.swp
 oving4/*
+*.aux
+*.log
+*.pdf
+*.pyg
+Info.plist
+*.synctex.gz
+poisson

@@ -34,13 +34,13 @@ endif
 all: mpiMatrix
 
 mpiMatrix: mpiMatrix.c mpi.com.c
-	$(cc) -Dstandalone mpiMatrix.c mpi.com.c -o mpiMatrix	 $(cflags) $(std) $(includedir) $(includelibs) $(libs)  
+	$(cc) $(openmpcflags) -Dstandalone mpiMatrix.c mpi.com.c -o mpiMatrix	 $(cflags) $(std) $(includedir) $(includelibs) $(libs)  
 
 release: mpiMatrix.c mpi.com.c poisson.c fst PrecisionTimer
-	$(cc) mpiMatrix.c mpi.com.c PrecisionTimer.o poisson.c fst.o -o poisson	-flto $(cflags) $(std) $(includedir) $(includelibs) $(libs) -O3 
+	$(cc) $(openmpcflags) mpiMatrix.c mpi.com.c PrecisionTimer.o poisson.c fst.o -o poisson	-flto $(cflags) $(std) $(includedir) $(includelibs) $(libs) -O3 
 
 poisson: mpiMatrix.c mpi.com.c poisson.c fst PrecisionTimer
-	$(cc) -g mpiMatrix.c mpi.com.c PrecisionTimer.o poisson.c fst.o -o poisson	$(cflags) $(debug)  $(std) $(includedir) $(includelibs) $(libs)  
+	$(cc) $(openmpcflags) -g mpiMatrix.c mpi.com.c PrecisionTimer.o poisson.c fst.o -o poisson	$(cflags) $(debug)  $(std) $(includedir) $(includelibs) $(libs)  
 
 fst: fst.f
 	$(gfortran) -c -flto -O3 fst.f  

@@ -1,0 +1,360 @@
+process no: 0 
+Divided by Diagonal in :0 seconds and 1902 µseconds
+fst 2 in: 0 seconds and 418107 µseconds
+tranpose 2 in:0 seconds and 844663 µseconds
+inverse fst 2 in: 0 seconds and 417095 µseconds
+inverse fst 1 in: 0 seconds and 417993 µseconds
+transpose 1 in: 0 seconds and 567820 µseconds
+fst 1 in :0 seconds and 901034 µseconds
+Created diagonal in: 0 seconds and 493 µseconds
+Total: 3 seconds and 569108 µseconds
+process no: 1 
+Divided by Diagonal in :0 seconds and 1902 µseconds
+fst 2 in: 0 seconds and 419094 µseconds
+tranpose 2 in:0 seconds and 844320 µseconds
+inverse fst 2 in: 0 seconds and 417290 µseconds
+inverse fst 1 in: 0 seconds and 417454 µseconds
+transpose 1 in: 0 seconds and 551939 µseconds
+fst 1 in :0 seconds and 915722 µseconds
+Created diagonal in: 0 seconds and 498 µseconds
+Total: 3 seconds and 568220 µseconds
+process no: 2 
+Divided by Diagonal in :0 seconds and 3471 µseconds
+fst 2 in: 0 seconds and 423605 µseconds
+tranpose 2 in:0 seconds and 835034 µseconds
+inverse fst 2 in: 0 seconds and 416711 µseconds
+inverse fst 1 in: 0 seconds and 420884 µseconds
+transpose 1 in: 0 seconds and 552012 µseconds
+fst 1 in :0 seconds and 913444 µseconds
+Created diagonal in: 0 seconds and 499 µseconds
+Total: 3 seconds and 565662 µseconds
+process no: 3 
+Divided by Diagonal in :0 seconds and 1955 µseconds
+fst 2 in: 0 seconds and 422940 µseconds
+tranpose 2 in:0 seconds and 835679 µseconds
+inverse fst 2 in: 0 seconds and 416909 µseconds
+inverse fst 1 in: 0 seconds and 423138 µseconds
+transpose 1 in: 0 seconds and 569031 µseconds
+fst 1 in :0 seconds and 902016 µseconds
+Created diagonal in: 0 seconds and 502 µseconds
+Total: 3 seconds and 572171 µseconds
+process no: 4 
+Divided by Diagonal in :0 seconds and 3433 µseconds
+fst 2 in: 0 seconds and 423117 µseconds
+tranpose 2 in:0 seconds and 834063 µseconds
+inverse fst 2 in: 0 seconds and 422469 µseconds
+inverse fst 1 in: 0 seconds and 422829 µseconds
+transpose 1 in: 0 seconds and 570555 µseconds
+fst 1 in :0 seconds and 898950 µseconds
+Created diagonal in: 0 seconds and 489 µseconds
+Total: 3 seconds and 575905 µseconds
+process no: 5 
+Divided by Diagonal in :0 seconds and 3513 µseconds
+fst 2 in: 0 seconds and 423958 µseconds
+tranpose 2 in:0 seconds and 832963 µseconds
+inverse fst 2 in: 0 seconds and 423112 µseconds
+inverse fst 1 in: 0 seconds and 422954 µseconds
+transpose 1 in: 0 seconds and 553283 µseconds
+fst 1 in :0 seconds and 916306 µseconds
+Created diagonal in: 0 seconds and 495 µseconds
+Total: 3 seconds and 576586 µseconds
+process no: 6 
+Divided by Diagonal in :0 seconds and 1795 µseconds
+fst 2 in: 0 seconds and 622868 µseconds
+tranpose 2 in:0 seconds and 24541 µseconds
+inverse fst 2 in: 0 seconds and 593351 µseconds
+inverse fst 1 in: 0 seconds and 653154 µseconds
+transpose 1 in: 0 seconds and 624773 µseconds
+fst 1 in :1 seconds and 223937 µseconds
+Created diagonal in: 0 seconds and 487 µseconds
+Total: 3 seconds and 744908 µseconds
+process no: 7 
+Divided by Diagonal in :0 seconds and 1955 µseconds
+fst 2 in: 0 seconds and 422715 µseconds
+tranpose 2 in:0 seconds and 835569 µseconds
+inverse fst 2 in: 0 seconds and 422520 µseconds
+inverse fst 1 in: 0 seconds and 423076 µseconds
+transpose 1 in: 0 seconds and 568380 µseconds
+fst 1 in :0 seconds and 900367 µseconds
+Created diagonal in: 0 seconds and 493 µseconds
+Total: 3 seconds and 575075 µseconds
+process no: 8 
+Divided by Diagonal in :0 seconds and 3538 µseconds
+fst 2 in: 0 seconds and 423470 µseconds
+tranpose 2 in:0 seconds and 832585 µseconds
+inverse fst 2 in: 0 seconds and 423231 µseconds
+inverse fst 1 in: 0 seconds and 423279 µseconds
+transpose 1 in: 0 seconds and 551867 µseconds
+fst 1 in :0 seconds and 914014 µseconds
+Created diagonal in: 0 seconds and 492 µseconds
+Total: 3 seconds and 572477 µseconds
+process no: 9 
+Divided by Diagonal in :0 seconds and 1913 µseconds
+fst 2 in: 0 seconds and 418694 µseconds
+tranpose 2 in:0 seconds and 844170 µseconds
+inverse fst 2 in: 0 seconds and 417221 µseconds
+inverse fst 1 in: 0 seconds and 418172 µseconds
+transpose 1 in: 0 seconds and 552024 µseconds
+fst 1 in :0 seconds and 916052 µseconds
+Created diagonal in: 0 seconds and 464 µseconds
+Total: 3 seconds and 568713 µseconds
+process no: 10 
+Divided by Diagonal in :0 seconds and 3526 µseconds
+fst 2 in: 0 seconds and 424124 µseconds
+tranpose 2 in:0 seconds and 832729 µseconds
+inverse fst 2 in: 0 seconds and 422860 µseconds
+inverse fst 1 in: 0 seconds and 422659 µseconds
+transpose 1 in: 0 seconds and 550529 µseconds
+fst 1 in :0 seconds and 912293 µseconds
+Created diagonal in: 0 seconds and 488 µseconds
+Total: 3 seconds and 569208 µseconds
+process no: 11 
+Divided by Diagonal in :0 seconds and 1936 µseconds
+fst 2 in: 0 seconds and 421689 µseconds
+tranpose 2 in:0 seconds and 838442 µseconds
+inverse fst 2 in: 0 seconds and 417041 µseconds
+inverse fst 1 in: 0 seconds and 421091 µseconds
+transpose 1 in: 0 seconds and 563510 µseconds
+fst 1 in :0 seconds and 901550 µseconds
+Created diagonal in: 0 seconds and 496 µseconds
+Total: 3 seconds and 565755 µseconds
+process no: 12 
+Divided by Diagonal in :0 seconds and 3444 µseconds
+fst 2 in: 0 seconds and 423486 µseconds
+tranpose 2 in:0 seconds and 836707 µseconds
+inverse fst 2 in: 0 seconds and 422861 µseconds
+inverse fst 1 in: 0 seconds and 419186 µseconds
+transpose 1 in: 0 seconds and 546763 µseconds
+fst 1 in :0 seconds and 917927 µseconds
+Created diagonal in: 0 seconds and 486 µseconds
+Total: 3 seconds and 570863 µseconds
+process no: 13 
+Divided by Diagonal in :0 seconds and 3533 µseconds
+fst 2 in: 0 seconds and 424109 µseconds
+tranpose 2 in:0 seconds and 832470 µseconds
+inverse fst 2 in: 0 seconds and 423121 µseconds
+inverse fst 1 in: 0 seconds and 422966 µseconds
+transpose 1 in: 0 seconds and 548263 µseconds
+fst 1 in :0 seconds and 911300 µseconds
+Created diagonal in: 0 seconds and 480 µseconds
+Total: 3 seconds and 566243 µseconds
+process no: 14 
+Divided by Diagonal in :0 seconds and 1997 µseconds
+fst 2 in: 0 seconds and 417788 µseconds
+tranpose 2 in:0 seconds and 845573 µseconds
+inverse fst 2 in: 0 seconds and 420208 µseconds
+inverse fst 1 in: 0 seconds and 417694 µseconds
+transpose 1 in: 0 seconds and 567078 µseconds
+fst 1 in :0 seconds and 897173 µseconds
+Created diagonal in: 0 seconds and 488 µseconds
+Total: 3 seconds and 567999 µseconds
+process no: 15 
+Divided by Diagonal in :0 seconds and 3536 µseconds
+fst 2 in: 0 seconds and 419569 µseconds
+tranpose 2 in:0 seconds and 837083 µseconds
+inverse fst 2 in: 0 seconds and 422337 µseconds
+inverse fst 1 in: 0 seconds and 422512 µseconds
+transpose 1 in: 0 seconds and 549232 µseconds
+fst 1 in :0 seconds and 913989 µseconds
+Created diagonal in: 0 seconds and 495 µseconds
+Total: 3 seconds and 568754 µseconds
+process no: 16 
+Divided by Diagonal in :0 seconds and 3532 µseconds
+fst 2 in: 0 seconds and 423958 µseconds
+tranpose 2 in:0 seconds and 832936 µseconds
+inverse fst 2 in: 0 seconds and 423137 µseconds
+inverse fst 1 in: 0 seconds and 422890 µseconds
+transpose 1 in: 0 seconds and 550990 µseconds
+fst 1 in :0 seconds and 911847 µseconds
+Created diagonal in: 0 seconds and 478 µseconds
+Total: 3 seconds and 569770 µseconds
+process no: 17 
+Divided by Diagonal in :0 seconds and 3529 µseconds
+fst 2 in: 0 seconds and 423465 µseconds
+tranpose 2 in:0 seconds and 832451 µseconds
+inverse fst 2 in: 0 seconds and 423363 µseconds
+inverse fst 1 in: 0 seconds and 423375 µseconds
+transpose 1 in: 0 seconds and 549645 µseconds
+fst 1 in :0 seconds and 910352 µseconds
+Created diagonal in: 0 seconds and 473 µseconds
+Total: 3 seconds and 566656 µseconds
+process no: 18 
+Divided by Diagonal in :0 seconds and 1933 µseconds
+fst 2 in: 0 seconds and 423083 µseconds
+tranpose 2 in:0 seconds and 836698 µseconds
+inverse fst 2 in: 0 seconds and 417893 µseconds
+inverse fst 1 in: 0 seconds and 420972 µseconds
+transpose 1 in: 0 seconds and 568108 µseconds
+fst 1 in :0 seconds and 897121 µseconds
+Created diagonal in: 0 seconds and 489 µseconds
+Total: 3 seconds and 566299 µseconds
+process no: 19 
+Divided by Diagonal in :0 seconds and 2309 µseconds
+fst 2 in: 0 seconds and 418256 µseconds
+tranpose 2 in:0 seconds and 839625 µseconds
+inverse fst 2 in: 0 seconds and 416765 µseconds
+inverse fst 1 in: 0 seconds and 423165 µseconds
+transpose 1 in: 0 seconds and 566059 µseconds
+fst 1 in :0 seconds and 918216 µseconds
+Created diagonal in: 0 seconds and 461 µseconds
+Total: 3 seconds and 584857 µseconds
+process no: 20 
+Divided by Diagonal in :0 seconds and 3482 µseconds
+fst 2 in: 0 seconds and 423593 µseconds
+tranpose 2 in:0 seconds and 835415 µseconds
+inverse fst 2 in: 0 seconds and 416629 µseconds
+inverse fst 1 in: 0 seconds and 420605 µseconds
+transpose 1 in: 0 seconds and 550785 µseconds
+fst 1 in :0 seconds and 913550 µseconds
+Created diagonal in: 0 seconds and 459 µseconds
+Total: 3 seconds and 564519 µseconds
+process no: 21 
+Divided by Diagonal in :0 seconds and 3437 µseconds
+fst 2 in: 0 seconds and 423121 µseconds
+tranpose 2 in:0 seconds and 833954 µseconds
+inverse fst 2 in: 0 seconds and 422577 µseconds
+inverse fst 1 in: 0 seconds and 422689 µseconds
+transpose 1 in: 0 seconds and 567443 µseconds
+fst 1 in :0 seconds and 893714 µseconds
+Created diagonal in: 0 seconds and 476 µseconds
+Total: 3 seconds and 567413 µseconds
+process no: 22 
+Divided by Diagonal in :0 seconds and 1783 µseconds
+fst 2 in: 0 seconds and 410844 µseconds
+tranpose 2 in:0 seconds and 449305 µseconds
+inverse fst 2 in: 0 seconds and 402411 µseconds
+inverse fst 1 in: 0 seconds and 810602 µseconds
+transpose 1 in: 0 seconds and 696405 µseconds
+fst 1 in :1 seconds and 203242 µseconds
+Created diagonal in: 0 seconds and 473 µseconds
+Total: 3 seconds and 975065 µseconds
+process no: 23 
+Divided by Diagonal in :0 seconds and 1759 µseconds
+fst 2 in: 0 seconds and 403462 µseconds
+tranpose 2 in:0 seconds and 24692 µseconds
+inverse fst 2 in: 0 seconds and 416657 µseconds
+inverse fst 1 in: 0 seconds and 403716 µseconds
+transpose 1 in: 0 seconds and 869680 µseconds
+fst 1 in :1 seconds and 1287 µseconds
+Created diagonal in: 0 seconds and 453 µseconds
+Total: 3 seconds and 121708 µseconds
+process no: 24 
+Divided by Diagonal in :0 seconds and 3442 µseconds
+fst 2 in: 0 seconds and 423486 µseconds
+tranpose 2 in:0 seconds and 836488 µseconds
+inverse fst 2 in: 0 seconds and 423077 µseconds
+inverse fst 1 in: 0 seconds and 418742 µseconds
+transpose 1 in: 0 seconds and 543593 µseconds
+fst 1 in :0 seconds and 913061 µseconds
+Created diagonal in: 0 seconds and 478 µseconds
+Total: 3 seconds and 562367 µseconds
+process no: 25 
+Divided by Diagonal in :0 seconds and 3531 µseconds
+fst 2 in: 0 seconds and 868155 µseconds
+tranpose 2 in:0 seconds and 388908 µseconds
+inverse fst 2 in: 0 seconds and 421932 µseconds
+inverse fst 1 in: 0 seconds and 422628 µseconds
+transpose 1 in: 0 seconds and 105767 µseconds
+fst 1 in :0 seconds and 911181 µseconds
+Created diagonal in: 0 seconds and 434 µseconds
+Total: 3 seconds and 122537 µseconds
+process no: 26 
+Divided by Diagonal in :0 seconds and 1883 µseconds
+fst 2 in: 0 seconds and 807123 µseconds
+tranpose 2 in:0 seconds and 492395 µseconds
+inverse fst 2 in: 0 seconds and 592238 µseconds
+inverse fst 1 in: 0 seconds and 618373 µseconds
+transpose 1 in: 0 seconds and 127272 µseconds
+fst 1 in :1 seconds and 32028 µseconds
+Created diagonal in: 0 seconds and 468 µseconds
+Total: 3 seconds and 671782 µseconds
+process no: 27 
+Divided by Diagonal in :0 seconds and 1757 µseconds
+fst 2 in: 0 seconds and 402773 µseconds
+tranpose 2 in:0 seconds and 25901 µseconds
+inverse fst 2 in: 0 seconds and 670768 µseconds
+inverse fst 1 in: 0 seconds and 402729 µseconds
+transpose 1 in: 0 seconds and 964317 µseconds
+fst 1 in :0 seconds and 402954 µseconds
+Created diagonal in: 0 seconds and 193 µseconds
+Total: 2 seconds and 871392 µseconds
+process no: 28 
+Divided by Diagonal in :0 seconds and 1955 µseconds
+fst 2 in: 0 seconds and 419696 µseconds
+tranpose 2 in:0 seconds and 842738 µseconds
+inverse fst 2 in: 0 seconds and 418997 µseconds
+inverse fst 1 in: 0 seconds and 418741 µseconds
+transpose 1 in: 0 seconds and 563176 µseconds
+fst 1 in :0 seconds and 879153 µseconds
+Created diagonal in: 0 seconds and 480 µseconds
+Total: 3 seconds and 544939 µseconds
+process no: 29 
+Divided by Diagonal in :0 seconds and 1965 µseconds
+fst 2 in: 0 seconds and 419944 µseconds
+tranpose 2 in:0 seconds and 842318 µseconds
+inverse fst 2 in: 0 seconds and 412236 µseconds
+inverse fst 1 in: 0 seconds and 418721 µseconds
+transpose 1 in: 0 seconds and 563942 µseconds
+fst 1 in :0 seconds and 880849 µseconds
+Created diagonal in: 0 seconds and 475 µseconds
+Total: 3 seconds and 540450 µseconds
+process no: 30 
+Divided by Diagonal in :0 seconds and 1883 µseconds
+fst 2 in: 0 seconds and 415040 µseconds
+tranpose 2 in:0 seconds and 852234 µseconds
+inverse fst 2 in: 0 seconds and 417041 µseconds
+inverse fst 1 in: 0 seconds and 413479 µseconds
+transpose 1 in: 0 seconds and 564922 µseconds
+fst 1 in :0 seconds and 883877 µseconds
+Created diagonal in: 0 seconds and 472 µseconds
+Total: 3 seconds and 548950 µseconds
+process no: 31 
+Divided by Diagonal in :0 seconds and 1928 µseconds
+fst 2 in: 0 seconds and 419970 µseconds
+tranpose 2 in:1 seconds and 105866 µseconds
+inverse fst 2 in: 0 seconds and 562404 µseconds
+inverse fst 1 in: 0 seconds and 417339 µseconds
+transpose 1 in: 0 seconds and 562091 µseconds
+fst 1 in :0 seconds and 880336 µseconds
+Created diagonal in: 0 seconds and 479 µseconds
+Total: 3 seconds and 950413 µseconds
+process no: 32 
+Divided by Diagonal in :0 seconds and 1928 µseconds
+fst 2 in: 0 seconds and 418714 µseconds
+tranpose 2 in:0 seconds and 845592 µseconds
+inverse fst 2 in: 0 seconds and 415404 µseconds
+inverse fst 1 in: 0 seconds and 417435 µseconds
+transpose 1 in: 0 seconds and 560559 µseconds
+fst 1 in :0 seconds and 885768 µseconds
+Created diagonal in: 0 seconds and 475 µseconds
+Total: 3 seconds and 545878 µseconds
+process no: 33 
+Divided by Diagonal in :0 seconds and 1895 µseconds
+fst 2 in: 0 seconds and 415303 µseconds
+tranpose 2 in:0 seconds and 851926 µseconds
+inverse fst 2 in: 0 seconds and 413398 µseconds
+inverse fst 1 in: 0 seconds and 413740 µseconds
+transpose 1 in: 0 seconds and 562616 µseconds
+fst 1 in :0 seconds and 881550 µseconds
+Created diagonal in: 0 seconds and 477 µseconds
+Total: 3 seconds and 540905 µseconds
+process no: 34 
+Divided by Diagonal in :0 seconds and 1971 µseconds
+fst 2 in: 0 seconds and 414725 µseconds
+tranpose 2 in:0 seconds and 848037 µseconds
+inverse fst 2 in: 0 seconds and 416540 µseconds
+inverse fst 1 in: 0 seconds and 418269 µseconds
+transpose 1 in: 0 seconds and 564024 µseconds
+fst 1 in :0 seconds and 884853 µseconds
+Created diagonal in: 0 seconds and 478 µseconds
+Total: 3 seconds and 548898 µseconds
+process no: 35 
+Divided by Diagonal in :0 seconds and 1878 µseconds
+fst 2 in: 0 seconds and 414068 µseconds
+tranpose 2 in:1 seconds and 271802 µseconds
+inverse fst 2 in: 0 seconds and 399215 µseconds
+inverse fst 1 in: 0 seconds and 418651 µseconds
+transpose 1 in: 0 seconds and 26000 µseconds
+fst 1 in :1 seconds and 196022 µseconds
+Created diagonal in: 0 seconds and 480 µseconds
+Total: 3 seconds and 728117 µseconds
