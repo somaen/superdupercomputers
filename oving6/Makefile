@@ -16,9 +16,9 @@ ifeq ($(OS),Linux)
 	includelibs=-L/usr/lib/openmpi/lib/
 endif
 ifeq ($(OS),Darwin) #Do magic
-	cc=clang
+	cc=gcc
 	gfortran = gfortran-mp-4.5 # Very very installation-dependant
-	cflags=-Weverything -pedantic 
+	cflags=-Wall -pedantic 
 	includedir=-I/opt/local/include/openmpi
 	includelibs=-L/opt/local/lib
 endif

@@ -35,13 +35,13 @@ double *createDiag(size_t m, size_t n) {
 }
 
 double populator(size_t x, size_t y , double scale) {
-	return 5 * M_PI * M_PI * scale * scale * sin(M_PI * (y + 1) * scale) * sin(M_PI * (x + 1) * scale);
+	return scale*scale;//5 * M_PI * M_PI * scale * scale * sin(M_PI * (y + 1) * scale) * sin(M_PI * (x + 1) * scale);
 }
 
 
 size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname, const char *logfile);
 size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname, const char *logfile) {
-	struct mpiMatrix *matrix = mpiMatrix_ctor_habitate((size_t)dimension , (size_t)dimension, uplink , populator);
+	struct mpiMatrix *matrix = mpiMatrix_ctor_habitate((size_t)dimension - 1, (size_t)dimension - 1, uplink , populator);
 
 	struct Precision_Timer divdiag;
 	struct Precision_Timer fsttimer2;
@@ -56,34 +56,45 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname,
 
 	PT_start(&total);
 	PT_start(&diagTimer);
-	double *diag = createDiag(dimension - 1, dimension);
+	double *diag = createDiag(dimension, dimension);
 	PT_stop(&diagTimer);
 
 	// Torje: Jeg kommenterte denne enda mer ut fordi jeg har populert allerede//mpiMatrix_fillValue(matrix, uplink -> rank);
 
 	// TODO: FST
-	//mpiMatrix_prettyPrint(matrix, uplink);
+	mpiMatrix_prettyPrint(matrix, uplink);
+	printf("\nOutput AFTER POPULATE: %e\n",mpiMatrix_findMax(matrix));
 	PT_start(&fsttimer1);
 	mpiMatrix_rowfst(matrix);
 	PT_stop(&fsttimer1);
-
+	printf("\n");
+	mpiMatrix_prettyPrint(matrix, uplink);
+	printf("\nOutput AFTER first FST: %e\n",mpiMatrix_findMax(matrix));
 	// Torje: Jeg kommenterte denne enda mer ut fordi jeg har populert allerede//populate(matrix, uplink);
 	//
-
 	PT_start(&transposetimer1);
 	mpiMatrix_transpose(matrix, uplink);
 	PT_stop(&transposetimer1);
 
+	printf("\n");
+	mpiMatrix_prettyPrint(matrix, uplink);
+	printf("\nOutput AFTER first transpose: %e\n",mpiMatrix_findMax(matrix));
 	// TODO: FSTINV
 	PT_start(&ifsttimer1);
 	mpiMatrix_rowifst(matrix);
 	PT_stop(&ifsttimer1);
 
+	printf("\n");
+	mpiMatrix_prettyPrint(matrix, uplink);
+	printf("\nOutput after FSTINF: %e\n",mpiMatrix_findMax(matrix));
 	PT_start(&divdiag);
 	mpiMatrix_divByDiag(matrix, diag);
 	PT_stop(&divdiag);
 
-
+	printf("\n");
+	mpiMatrix_prettyPrint(matrix, uplink);
+	printf("\nOutput after DIVBYDIAG: %e\n",mpiMatrix_findMax(matrix));
+	return 0;
 	// TODO FST
 	PT_start(&fsttimer2);
 	mpiMatrix_rowfst(matrix);
