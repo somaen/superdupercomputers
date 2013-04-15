@@ -4,7 +4,7 @@ void mpi_com_Init(struct mpi_com *uplink, int *argc, char ***argv) {
 	MPI_Init(argc, argv);
 	int irank, inprocs;
 	MPI_Comm_rank(MPI_COMM_WORLD, &irank);
-	
+
 	uplink -> comm = MPI_COMM_WORLD;
 	MPI_Comm_size(MPI_COMM_WORLD, &inprocs);
 	uplink->rank = (size_t)irank;

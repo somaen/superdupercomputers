@@ -15,7 +15,7 @@ void PT_diffTime(struct Precision_Timer *pt) {
 	}
 	return;
 }
-void print_timeval(struct Precision_Timer *pt, FILE * file){
+void print_timeval(struct Precision_Timer *pt, FILE *file) {
 	fprintf(file, "%ld seconds and %ld µseconds", (long)pt->time_diff.tv_sec, (long)pt->time_diff.tv_usec);
 	return;
 }
