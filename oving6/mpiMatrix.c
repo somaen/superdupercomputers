@@ -160,9 +160,13 @@ int * mpiMatrix_genDispl(struct mpi_com *uplink, int * counts) {
 	return displ;
 }
 
-double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink) {
-	size_t size = matrix -> widthLocal*matrix->height;
-	double *serialisedArray = calloc( size, sizeof(double));
+void mpiMatrix_swapDataAux( struct mpiMatrix * matrix) {
+	double *temp = matrix ->data;
+	matrix->data = matrix->aux;
+	matrix->aux = temp;
+}
+
+void mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink) {
 	size_t serialIndex = 0;
 	for (size_t process = 0; 
 			process < ( matrix -> height % uplink->nprocs ); 
@@ -171,7 +175,7 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 		size_t vectorLength = (matrix -> height / uplink->nprocs + 1);
 		for( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
 			size_t matrixIndex = column * matrix -> height + process * vectorLength + startindex;
-			memcpy ( & serialisedArray[serialIndex] , & matrix->data[matrixIndex], vectorLength *sizeof(double));
+			memcpy ( & matrix->aux[serialIndex] , & matrix->data[matrixIndex], vectorLength *sizeof(double));
 			serialIndex += vectorLength;
 		}
 	}
@@ -182,23 +186,22 @@ double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_c
 		size_t vectorLength = (matrix -> height / uplink->nprocs);
 		for( size_t column = 0 ; column < matrix -> widthLocal ; column ++ ){
 			size_t matrixIndex = column * matrix -> height + process * vectorLength + startindex;
-			memcpy ( & serialisedArray[serialIndex] , & matrix->data[matrixIndex], vectorLength *sizeof(double));
+			memcpy ( & matrix->aux[serialIndex] , & matrix->data[matrixIndex], vectorLength *sizeof(double));
 			serialIndex += vectorLength;
 		}
 	}
-	return serialisedArray;
+	mpiMatrix_swapDataAux(matrix);
 }
 
-double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data){//, struct mpi_com *uplink ){
-	double * cVectors = calloc ( matrix -> height * matrix-> widthLocal , sizeof(double)); 
+void mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix){//, struct mpi_com *uplink ){
 	for ( size_t index = 0; 
 			index <	matrix -> height *matrix -> widthLocal ; 
 			index ++ ){
 		size_t newcoord =  (index / matrix -> widthLocal ) + (index % matrix->widthLocal)*matrix->height;
 		//printf("%zu : %zu\n", index , newcoord);
-		cVectors[newcoord] = data [index];
+		matrix->aux[newcoord] = matrix->data [index];
 	}
-	return cVectors;
+	mpiMatrix_swapDataAux(matrix);
 }
 
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink){
@@ -215,8 +218,8 @@ struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com upl
 		offset = (width%uplink.nprocs) * (width / uplink.nprocs+1);
 	}*/
 
-	matrix->data= calloc(height*width, sizeof(double));
-	matrix->aux= calloc(height*width, sizeof(double));
+	matrix->data = calloc(height*width, sizeof(double));
+	matrix->aux = calloc(height*width, sizeof(double));
 	//matrix->widthOffset = offset;
 	matrix->width = widthLocal;
 	matrix->widthLocal = widthLocal;
@@ -233,12 +236,13 @@ void mpiMatrix_dtor(struct mpiMatrix *matrix) {
 }
 
 void mpiMatrix_transpose( struct mpiMatrix * matrix, struct mpi_com *uplink) {
-	double * packed = mpiMatrix_serialiseForSending(matrix, uplink);
+	mpiMatrix_serialiseForSending(matrix, uplink);
 	int * SRcounts = mpiMatrix_genCounts(matrix, uplink);
 	int * SRdispl = mpiMatrix_genDispl(uplink, SRcounts);
 
-	MPI_Alltoallv( packed, SRcounts , SRdispl, MPI_DOUBLE, matrix->data, SRcounts, SRdispl, MPI_DOUBLE,  uplink->comm);
-	matrix -> data = mpiMatrix_deserialiseAfterReception(matrix , matrix->data);
+	MPI_Alltoallv( matrix->data, SRcounts , SRdispl, MPI_DOUBLE, matrix->aux, SRcounts, SRdispl, MPI_DOUBLE,  uplink->comm);
+	mpiMatrix_swapDataAux(matrix);
+	mpiMatrix_deserialiseAfterReception(matrix);
 
 	free(SRcounts);
 	free(SRdispl);

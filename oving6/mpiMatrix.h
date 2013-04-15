@@ -20,13 +20,14 @@ void mpiMatrix_dtor(struct mpiMatrix *matrix);
 double *getVector(struct mpiMatrix, size_t column);
 void populate( struct mpiMatrix * matrix , struct mpi_com *uplink);
 int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink);
-double * mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink);
-double *mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix, double * data);
+void mpiMatrix_serialiseForSending( struct mpiMatrix * matrix , struct mpi_com *uplink);
+void mpiMatrix_deserialiseAfterReception( struct mpiMatrix * matrix);
 int * mpiMatrix_genCounts( struct mpiMatrix * matrix , struct mpi_com *uplink);
 int * mpiMatrix_genDispl(struct mpi_com *uplink, int * counts);
 void mpiMatrix_transpose( struct mpiMatrix * matrix, struct mpi_com *uplink);
 void mpiMatrix_print( struct mpiMatrix * matrix );
 
+void mpiMatrix_swapDataAux( struct mpiMatrix * matrix);
 
 double mpiMatrix_findMax(struct mpiMatrix *matrix);
 void mpiMatrix_divByDiag(struct mpiMatrix *matrix, double *diag);
