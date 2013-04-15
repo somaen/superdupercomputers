@@ -1,0 +1,44 @@
+\section{Utilities, Compilers and Hardware}
+
+\subsection{Libraries}
+Our program needs to be linked against the following libraries
+\begin{itemize}
+    \item{\texttt{libmpi}}  -  to get MPI-functionality
+    \item{\texttt{libm}}  -  to get the necessary math-functionality.
+\end{itemize}
+
+\subsection{Compilers}
+On Kongull we used the following compilers to compile our program:
+\begin{itemize}
+    \item{\texttt{GCC 4.7.0}}
+    \item{\texttt{GFortran 4.7.0}}
+\end{itemize}
+
+Both of which had to be activated explicitly with \texttt{module load gcc/4.7.0}.
+
+Locally we also did some testing, using these compiler-versions, with all warnings enabled to make sure that our code was as well written and portable as possible:
+\begin{itemize}
+    \item{\texttt{GCC 4.7.2}}
+    \item{\texttt{GCC 4.2.1 (Apple LLVM)}}
+    \item{\texttt{Clang 3.0}}
+    \item{\texttt{Clang Apple LLVM 4.2 (based on LLVM 3.2svn)}}
+    \item{\texttt{Gfortran 4.5.4}}
+    \item{\texttt{Gfortran 4.7.2}}
+\end{itemize}
+
+\subsection{Kongull}
+
+The distributed memory computer we ran our program on is called Kongull, it consists of 93 compute nodes that each have the following specs:
+\begin{itemize}
+    \item 24/48 GiB RAM
+    \item 2x6 Core AMD Opteron 2431, each with the following specs:
+    \begin{itemize}
+        \item 2.4 GHz
+        \item 6 x 128 L1 Cache
+        \item 6 x 512 KiB L2 Cache
+        \item 6 MiB L3 Cache
+    \end{itemize}
+\end{itemize}
+
+Each of these nodes has 2 CPUs, that share memory, thus we enjoy the combination of shared memory computing AND distributed memory while
+running on this cluster.
