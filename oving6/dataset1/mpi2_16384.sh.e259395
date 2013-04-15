@@ -1,0 +1,8 @@
+chown: cannot access `/state/partition1/scratch/pbstmp.259395.rocks.hpc.ntnu.no': No such file or directory
+mpirun: killing job...
+
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 15084 on node compute-3-11.local exited on signal 0 (Unknown signal 0).
+--------------------------------------------------------------------------
+mpirun: clean termination accomplished
+

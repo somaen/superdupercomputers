@@ -1,0 +1,7 @@
+chown: cannot access `/state/partition1/scratch/pbstmp.259388.rocks.hpc.ntnu.no': No such file or directory
+rm: cannot remove `testdata2_1024.dat': No such file or directory
+rm: cannot remove `testlog2_1024': No such file or directory
+
+real	0m18.600s
+user	0m22.190s
+sys	0m16.949s
