@@ -1,0 +1,46 @@
+\setion{The program}
+\subsubsection{The matrix}
+We can set the matrix as the minimum memory we need as we do not attempt to
+compress the information. The matrix is square and this results in it using
+\emph{n} time the space a variable occupies. After finalising we saw that we
+should have linked our struct directly to the MPI session as it never is used
+without it and that would make the code somewhat more neat. 
+
+\subsubsection{MPI and transposition}
+MPI is only used to infer the local dimensions of the matrix and more directly
+to do the communication during the transpose operation. We use what we consider
+the minimum practical space required for this, auxillary memory being the same
+size as the area where the matrix holds the data. To minimise the connections
+needed we serialise the data before sending so that all data going from process
+A and process B is in one sequence. After the data have been received in a
+process it will do a transpose locally, since it must be done at one point and
+after the transport step is the most convenient point to do it. 
+
+Technically we could managed with less auxillary memory, but we believe this
+would have resulted in longer running time, because we would need to do parts
+of the transposition before we can continue the communication and much more
+complexity. 
+
+\subsubsection{fast sine transform and inverse }
+As the fortran file was not quite readable for us, we neatly wrapped up the
+\emph{fst_()} and \emph{fstinv_()} functions in functions which allocates the
+auxillary memory needed and dispatches the function which does the math. These
+wrappers are trivially parallelisable using \emph{openMP}. 
+
+\subsection{Putting it all together} 
+By looking at the original program and figuring out what each part did we
+mapped that to what we had implemented and put it together the same way, just
+using our parallelised versions. The result looks more or less like this list,
+except for timers that we included. 
+
+\begin{itemize}
+\item Initialise matrix
+\item Initialise the eigenvalue vector to our operator
+\item apply the fast sine transform on the matrix
+\item transpose matrix
+\item apply the fast inverse sine transform
+\item divide the matrix elements by the eigenvalues of the operator ()
+\item sine transform
+\item transpose matrix
+\item inverse sine transform to get the answer
+\end{itemize}
