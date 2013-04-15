@@ -14,4 +14,11 @@ in our case.
 Given that we have a supercomputer at our hands we could be tempted to just
 throw processing power on the problem untill it disappears, but a simple solver
 based on Elementary linear algebra would be very slow compared to other
-solutions. A solver using gaussian elimination would have a vector of unknowns being \emph{n} long
+solutions. A solver using gaussian elimination or LU-factorisation would have a
+vector of unknowns being \emph{n}$^2$ long and require \emph{n}$^6$ floating
+point operations. Given that each unknow only depends on its neighbours we have
+a banded matrix and can shave off \emph{n}$^2$ and achieve the same result in
+\emph{n}$^4$. 
+
+Using properties that is in our stencil, our discretisation of the Laplace
+operator, giving us that 
