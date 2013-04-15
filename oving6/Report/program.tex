@@ -1,4 +1,10 @@
 \section{The program}
+\subsection{Components of a solution}
+Our program consists of three components that come together to produce a results to
+the problem at hand, a matrix that holds the actual data, and some necessary metadata,
+like row/column-count, a transpose-function for this matrix, that utilizes MPI for communication,
+and finally the provided (inverse) fast sine transform-functions.
+
 \subsubsection{The matrix}
 We can set the matrix as the minimum memory we need as we do not attempt to
 compress the information. The matrix is square and this results in it using
