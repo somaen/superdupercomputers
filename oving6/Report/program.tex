@@ -1,9 +1,10 @@
 \section{The program}
 \subsection{Components of a solution}
-Our program consists of three components that come together to produce a results to
-the problem at hand, a matrix that holds the actual data, and some necessary metadata,
-like row/column-count, a transpose-function for this matrix, that utilizes MPI for communication,
-and finally the provided (inverse) fast sine transform-functions.
+Our program consists of three components that come together to produce a
+results to the problem at hand, a matrix that holds the actual data, and some
+necessary metadata, like row/column-count, a transpose-function for this
+matrix, that utilizes MPI for communication, and finally the provided (inverse)
+fast sine transform-functions.
 
 \subsubsection{The matrix}
 We can set the matrix as the minimum memory we need as we do not attempt to
@@ -22,16 +23,19 @@ A and process B is in one sequence. After the data have been received in a
 process it will do a transpose locally, since it must be done at one point and
 after the transport step is the most convenient point to do it. 
 
-Technically we could have managed with less auxiliary memory, but we believe this
-would have resulted in longer running time, because we would need to do parts
-of the transposition before we can continue the communication and thus add much more
-complexity. 
+Technically we could have managed with less auxiliary memory, but we believe
+this would have resulted in longer running time, because we would need to do
+parts of the transposition before we can continue the communication and thus
+add much more complexity. 
 
 \subsubsection{fast sine transform and inverse }
 As the fortran file was not quite readable for us, we neatly wrapped up the
 \texttt{fst\_()} and \texttt{fstinv\_()} functions in functions which allocates the
 auxillary memory needed and dispatches the function which does the math. These
-wrappers are trivially parallelisable using \emph{openMP}. 
+wrappers are trivially parallelisable using \emph{openMP}, the one thing to
+watch out for is the part where each paralell need its own auxillary space.
+Paralellising uses \emph{n} times the size of a double for each parallel run at
+the same time, a low price to pay for the speed increase. 
 
 \subsection{Putting it all together} 
 By looking at the original program and figuring out what each part did we
