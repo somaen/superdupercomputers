@@ -5,7 +5,6 @@ a.out
 oving4/*
 *.aux
 *.log
-*.pdf
 *.pyg
 Info.plist
 *.synctex.gz
