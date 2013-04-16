@@ -1,0 +1,19 @@
+\section{Solution strategies}
+Given that we have a supercomputer at our hands we could be tempted to just
+throw processing power on the problem until it disappears, but a simple solver
+based on Elementary linear algebra would be very slow compared to other
+solutions. A solver using gaussian elimination or LU-factorisation would have a
+vector of unknowns being \emph{n}$^2$ long and require \emph{n}$^6$ floating
+point operations. Given that each unknown only depends on its neighbours we have
+a banded matrix and can shave off \emph{n}$^2$ and achieve the same result in
+\emph{n}$^4$. 
+
+Using properties that is in our stencil, our discretisation of the Laplace
+operator, is itself transposed so we can use a three-point stencil: T, $\mathrm{PU}=\mathrm{TU+UT}$, which is
+the same as we use in two dimensions, both ways, just swapping what side we
+multiply with, then diagonalising T, putting us at \emph{n}$3$ floating point
+operations. A further improvement on this method can be done replacing a vector
+matrix product with a Fast sine transform, a transpose and a fast inverse sine
+transform landing us at $\log(n)\cdot n^2$. We are not attempting to further
+explain as we did not quite understand the diagonalisation part. 
+	
