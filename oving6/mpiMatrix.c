@@ -227,12 +227,11 @@ void mpiMatrix_serialiseForSending(struct mpiMatrix *matrix , struct mpi_com *up
 	mpiMatrix_swapDataAux(matrix);
 }
 
-void mpiMatrix_deserialiseAfterReception(struct mpiMatrix *matrix) { //, struct mpi_com *uplink ){
+void mpiMatrix_deserialiseAfterReception(struct mpiMatrix *matrix) {
 	for (size_t index = 0;
 	        index < matrix -> height * matrix -> widthLocal ;
 	        index ++) {
 		size_t newcoord = (index / matrix -> widthLocal) + (index % matrix->widthLocal) * matrix->height;
-		//printf("%zu : %zu\n", index , newcoord);
 		matrix->aux[newcoord] = matrix->data [index];
 	}
 	mpiMatrix_swapDataAux(matrix);
@@ -241,20 +240,10 @@ void mpiMatrix_deserialiseAfterReception(struct mpiMatrix *matrix) { //, struct 
 struct mpiMatrix *mpiMatrix_ctor(size_t height, size_t width, struct mpi_com uplink) {
 	struct mpiMatrix *matrix = calloc(1, sizeof(struct mpiMatrix));
 	size_t widthLocal = width / uplink.nprocs + ((uplink.rank < (width % uplink.nprocs)) ? 1 : 0);
-	//size_t offset;
-	/*
-
-	if ( uplink . rank >= ( width % uplink.nprocs )){
-	    offset = (width%uplink.nprocs) * (width / uplink.nprocs+1);
-	    offset += (uplink.nprocs- (width%uplink.nprocs))*(width / uplink.nprocs+1);
-	}
-	else{
-	    offset = (width%uplink.nprocs) * (width / uplink.nprocs+1);
-	}*/
 
 	matrix->data = calloc(height *width, sizeof(double));
 	matrix->aux = calloc(height *width, sizeof(double));
-	//matrix->widthOffset = offset;
+	
 	matrix->width = widthLocal;
 	matrix->widthLocal = widthLocal;
 	matrix->height = height;
