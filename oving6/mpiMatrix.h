@@ -11,6 +11,7 @@ struct mpiMatrix {
 	double *aux;
 };
 
+void mpiMatrix_minus( struct mpiMatrix * matrix, struct mpi_com *uplink ,double(*habitant)(size_t, size_t, double));
 void mpiMatrix_fprettyPrint(struct mpiMatrix *matrix , struct mpi_com *uplink, const char *filename);
 void mpiMatrix_fprint(struct mpiMatrix *matrix, const char *filename);
 void mpiMatrix_prettyPrint(struct mpiMatrix *matrix , struct mpi_com *uplink);

@@ -10,22 +10,8 @@
 
 
 double populator(size_t x, size_t y , double scale);
-
+double minusfunction(size_t x, size_t y , double scale);
 double *createDiag(size_t m, size_t n);
-/*
-void FST_wrap_m(double **v, int n, double *w, int nn, int m) {
-    for (size_t i = 0; i < m; i++) {
-        fst_(v[i], &n, w, &nn);
-    }
-}
-
-void FSTINV_wrap_m(double **v, int n, double *w, int nn, int m) {
-    for (size_t i = 0; i < m; i++) {
-        fstinv_(v, &n, w, &nn);
-    }
-}*/
-
-
 double *createDiag(size_t m, size_t n) {
 	double *diag = (double *) calloc(m, sizeof(double));
 	for (size_t i = 0; i < m; i++) {
@@ -35,9 +21,12 @@ double *createDiag(size_t m, size_t n) {
 }
 
 double populator(size_t x, size_t y , double scale) {
-	return scale*scale;//5 * M_PI * M_PI * scale * scale * sin(M_PI * (y + 1) * scale) * sin(M_PI * (x + 1) * scale);
+	return 5 * M_PI * M_PI * scale * scale * sin(2*M_PI * (y + 1) * scale) * sin( M_PI * (x + 1) * scale);
 }
 
+double minusfunction(size_t x, size_t y , double scale) {
+	return sin(2*M_PI * (y + 1) * scale) * sin(M_PI * (x + 1) * scale);
+}
 
 size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname, const char *logfile);
 size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname, const char *logfile) {
@@ -141,7 +130,9 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname,
 		}
 		MPI_Barrier(uplink ->comm);
 	}
+	mpiMatrix_minus(matrix, uplink, minusfunction);
 	mpiMatrix_fprettyPrint(matrix, uplink, resultname);
+	printf("%e\n", mpiMatrix_findMax(matrix));
 
 	int *counts = mpiMatrix_genCounts(matrix, uplink);
 	int *displ = mpiMatrix_genDispl(uplink, counts);

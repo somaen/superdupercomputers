@@ -1,5 +1,5 @@
 \section{Errors}
-Subsituting the formula in place of $f$ and comparing the result with the analytical answer yields us a difference we can compare to the expected convergence of the method. Table \ref{tab:relerr} shows that we have the convergence that we were after. 
+Subsituting the formula in place of $f$ and comparing the result with the analytical answer yields us a difference we can compare to the expected convergence of the method. Table \ref{tab:relerr} shows that we have the convergence that we were after. To achieve this only the populate function and minus/campare funtion needed to be changed. As the bounds and edge conditions were left unchanged nothing more needed to be changed.  
 
 \begin{table}[t]
 \caption{\label{tab:relerr}Error in the differents resolutions lining up where we expect them to be. Multiplying the absolute error with the relative error correction, which matches a quadratic convergence in error, below gives near identical results for all resolutions. The function that were set in were -5 $\pi \sin(\pi x ) \sin(2\pi y)$ and it was compared to $\sin(\pi x ) \sin(2\pi y)$. }
@@ -15,3 +15,9 @@ relative correction   1024 &   256   &  64   &  16  &    4   &   1\\
 \hline 
 \end{tabular}
 \end{table} 
+
+\section{Non-homogeneous Dirichelet boundary} 
+We are going to hazard a guess that we can make a sloping surface between the boundaries and deduct the corresponding value from the matrix, resulting in us returning to a homogeneous Dirichelet boundary equal to 0, apply this solution to problem, and afterwards add the surface again. 
+
+\section{Extension in both directions}
+As the $h$ is bound to the steplength, changing the total length from 1 to $L_x$ and $L_y$ changes how we compute it, we would seemingly be getting to $h$s, $h_y$ and $h_x$. We do also believe that this would have an effect on the eigenvalue vector, giving us 2, one for each direction. 
