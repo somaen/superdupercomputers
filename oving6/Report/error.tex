@@ -1,0 +1,17 @@
+\section{Errors}
+Subsituting the formula in place of $f$ and comparing the result with the analytical answer yields us a difference we can compare to the expected convergence of the method. Table \ref{tab:relerr} shows that we have the convergence that we were after. 
+
+\begin{table}[t]
+\caption{\label{tab:relerr}Error in the differents resolutions lining up where we expect them to be. Multiplying the absolute error with the relative error correction, which matches a quadratic convergence in error, below gives near identical results for all resolutions. The function that were set in were -5 $\pi \sin(\pi x ) \sin(2\pi y)$ and it was compared to $\sin(\pi x ) \sin(2\pi y)$. }
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 
+ &  2048 & 1024 & 512 & 256 & 128 & 64 \\ 
+\hline 
+absolute error &6.6671e-07  & 2.6668e-06 &  1.0667e-05  & 4.2670e-05 &  1.7069e-04 &  6.8297e-04\\
+\hline 
+relative correction   1024 &   256   &  64   &  16  &    4   &   1\\
+\hline 
+ 6.8271e-04 &  6.8271e-04 &  6.8272e-04 &  6.8273e-04 &  6.8278e-04  & 6.8297e-04\\
+\hline 
+\end{tabular}
+\end{table} 
