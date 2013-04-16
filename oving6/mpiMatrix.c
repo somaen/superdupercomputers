@@ -18,6 +18,18 @@ struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mp
 	free(displ);
 	return matrix;
 }
+void mpiMatrix_minus( struct mpiMatrix * matrix, struct mpi_com *uplink ,double(*habitant)(size_t, size_t, double)){
+	int *counts = mpiMatrix_genCounts(matrix, uplink);
+	int *displ = mpiMatrix_genDispl(uplink, counts);
+	double scale  = 1. / (matrix -> height + 1) ;
+	for (size_t y = 0 ; y < matrix -> widthLocal ; y++) {
+		for (size_t x = 0 ; x < matrix -> height ; x++) {
+			matrix -> data[y * matrix -> height + x ] -= habitant(x, y + (size_t)displ[uplink ->rank] / matrix -> width, scale);
+		}
+	}
+	free(counts);
+	free(displ);
+}
 
 // fst.f
 void fst_(double *vector, int *vector_length, double *aux_mem, int *aux_mem_length); // Vector, Array Length, Auxiliary Memory, Length
