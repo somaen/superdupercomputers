@@ -3,6 +3,8 @@ Subsituting the formula in place of $f$ and comparing the result with the analyt
 
 \begin{table}[t]
 \caption{\label{tab:relerr}Error in the differents resolutions lining up where we expect them to be. Multiplying the absolute error with the relative error correction, which matches a quadratic convergence in error, below gives near identical results for all resolutions. The function that were set in were -5 $\pi \sin(\pi x ) \sin(2\pi y)$ and it was compared to $\sin(\pi x ) \sin(2\pi y)$. }
+
+{\footnotesize
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
  &  2048 & 1024 & 512 & 256 & 128 & 64 \\ 
@@ -14,7 +16,9 @@ rel. correction  & 1024 &   256   &  64   &  16  &    4   &   1\\
 & 6.8271e-04 &  6.8271e-04 &  6.8272e-04 &  6.8273e-04 &  6.8278e-04  & 6.8297e-04\\
 \hline 
 \end{tabular}
+}
 \end{table} 
+
 
 \section{Non-homogeneous Dirichelet boundary} 
 We are going to hazard a guess that we can make a sloping surface between the boundaries and deduct the corresponding value from the matrix, resulting in us returning to a homogeneous Dirichelet boundary equal to 0, apply this solution to problem, and afterwards add the surface again. 

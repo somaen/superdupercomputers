@@ -28,7 +28,7 @@ Locally we also did some testing, using these compiler-versions, with all warnin
 
 \subsection{Kongull}
 
-The distributed memory computer we ran our program on is called Kongull, it consists of 93 compute nodes that each have the following specs:
+The distributed memory computer we ran our program on is called Kongull, it consists of 93 compute nodes that each have the following specs\footnote{\url{http://docs.notur.no/Members/hrn/kongull.hpc.ntnu.no/kongull-hardware-1/hardware}}:
 \begin{itemize}
     \item 24/48 GiB RAM
     \item 2x6 Core AMD Opteron 2431, each with the following specs:
@@ -40,5 +40,6 @@ The distributed memory computer we ran our program on is called Kongull, it cons
     \end{itemize}
 \end{itemize}
 
-Each of these nodes has 2 CPUs, that share memory, thus we enjoy the combination of shared memory computing AND distributed memory while
-running on this cluster.
+Each of these nodes has 2 CPUs, that share memory, thus we enjoy the combination of shared memory computing AND distributed memory while running on this cluster.
+
+As a side note, the hardware-listings we read listed the machine as being homogenous, while our results differed enough that we are led to believe that Kongull is atleast somewhat heterogenous in it's CPU-setup.

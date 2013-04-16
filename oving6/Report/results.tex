@@ -3,13 +3,13 @@
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.7\textwidth]{datashit512flat_v2.png}
-    \caption{$H^2$}
+    \caption{Putting the steplength squared,$h^2$ ,  into the matrix yielded this pyramidlike figure.  }
 \end{figure}
 \FloatBarrier
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.7\textwidth]{datashit512sinpixsin2pix_v2.png}
-    \caption{$(sin(\pi*x)\cdot sin(2\pi*y))\cdot 5\pi^2$}
+    \caption{ Seeding the matrix with one of the suggested functions, $(sin(\pi*x)\cdot sin(2\pi*y))\cdot 5\pi^2$, multiplied by the steplength squared, yields this figure. }
 \end{figure}
 \FloatBarrier
 
@@ -33,24 +33,34 @@ t_{n} &= \dfrac
     \label{runsize}
 \end{figure}
 
-\begin{figure}[ht]
-    \begin{tabular}{l | c | c | c | c}
-        N & Run time & Extrapolated from 1024 & Extrapolated from 16384 & Speedup \\
+\begin{table}[ht]
+  \centering
+    \begin{tabular}{l | c | p{3cm} | p{3cm} | c}
+        N & Run time & Extrapolated from 1024 & Extrapolated from 16384 \\
         \hline
         1024 & 4,6 & 4,6 & 3,16\\
-        2048 & 16,76 & 20,24 & 13,89 & 11,2522\\
-        4096 & 62,8	 & 88,32 & 60,59 & 10,7935\\
-        8192 & 323,67 & 382,72 & 262,55 & 4,1162\\
-        16384 & 1130,97 & 1648,64 & 1130,97 \\
+        2048 & 16,76 & 20,24 & 13,89 \\
+        4096 & 62,8	 & 88,32 & 60,59 \\
+        8192 & 323,67 & 382,72 & 262,55 \\
+        16384 & 1130,97 & 1648,64  \\
         \hline
     \end{tabular}
     \caption{Run time compared to extrapolated run time}
-\end{figure}
+\end{table}
 
 To show a $n^2\cdot$log n extrapolation from the actual run time, as shown in figure \ref{runsize}, where we did an extrapolation from the run time of a problem set of size 1024 and up, and a similar extrapolation from the run time of a problem set of size 16 384. This shows that our runtime scales within the expected values, although the extrapolation looks closer when basing it on 16 384 than when basing it on 1024. This is partially because the smaller problem sets fit better into cache, but also because the actual run time dominates less than the constant-factors at these sizes.
 \FloatBarrier
 We also did a comparison with regards to how our program scales with the amount of processes it is run with,
 as shown in figure \ref{numprocs4096}, our run time does indeed go down, with an odd increase in speed between 6 processes and 9 processes.
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.8\textwidth]{RunTimePerProcess2048.png}
+    \caption{Run time for problem size 2048 with varying process-amount}
+    \label{numprocs2048}
+\end{figure}
+
+
 \begin{figure}[t]
   \centering
     \includegraphics[width=0.8\textwidth]{RunTimePerProcess4096.png}
@@ -63,21 +73,15 @@ the Kongull-home page does state that it is a homogenous cluster, results and ru
 
 A similar run was also run for problem sizes of 8192 (Figure \ref{numprocs8192} ).
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.8\textwidth]{RunTimePerProcess2048.png}
-    \caption{Run time for problem size 2048 with varying process-amount}
-    \label{numprocs2048}
-\end{figure}
-
 \begin{figure}[t]
   \centering
     \includegraphics[width=0.8\textwidth]{RunTimePerProcess8192.png}
-    \caption{Run time for problem size 2048 with varying process-amount}
+    \caption{Run time for problem size 8192 with varying process-amount}
     \label{numprocs8192}
 \end{figure}
 
-\begin{table}[ht]
+\begin{table}[t]
+  \centering
     \begin{tabular}{l | c | c | r}
         NumProcs & Speed & SpeedUp & Parallell Efficiency \\
         \hline
@@ -94,6 +98,7 @@ A similar run was also run for problem sizes of 8192 (Figure \ref{numprocs8192} 
 \end{table}
 
 \begin{table}[ht]
+  \centering
     \begin{tabular}{l | c | c | r}
         NumProcs & Speed & SpeedUp & Parallell Efficiency \\
         \hline
@@ -110,6 +115,7 @@ A similar run was also run for problem sizes of 8192 (Figure \ref{numprocs8192} 
 \end{table}
 
 \begin{table}[ht]
+  \centering
        \begin{tabular}{l | c | c | r}
         NumProcs & Speed & SpeedUp & Parallell Efficiency \\
         \hline
@@ -119,7 +125,7 @@ A similar run was also run for problem sizes of 8192 (Figure \ref{numprocs8192} 
         9 & 41,92 & 5,9828 & 0,66476 \\
         12 & 47,12 & 5,3226 & 0,44355 \\
         18 & 34,74 & 7,2193 & 0,40107 \\
-        36 & 15,58 & ? & ? \\
+        36 & 15,58 & 16,098 & 0,44715 \\
         \hline
     \end{tabular}
 \caption{Speedup and parallell efficiency for problem size 8192}
