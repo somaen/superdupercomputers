@@ -80,8 +80,6 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname,
 	PT_stop(&ifsttimer2);
 	PT_stop(&total);
 
-	// mpiMatrix_findMax(matrix);
-
 	PT_diffTime(&total);
 	PT_diffTime(& divdiag);
 	PT_diffTime(& fsttimer2);
@@ -151,7 +149,6 @@ size_t poisson(size_t dimension, struct mpi_com *uplink, const char *resultname,
 int main(int argc, char **argv) {
 	struct mpi_com uplink;
 	mpi_com_Init(&uplink , &argc, & argv);
-	//printf("rank: %zu nprocs: %zu\n", uplink . rank , uplink . nprocs );
 	poisson((size_t)atoi(argv[1]),  &uplink, argv[2], argv[3]);
 	mpi_com_Finalize();
 	return 0;

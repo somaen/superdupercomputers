@@ -11,7 +11,6 @@ struct mpiMatrix *mpiMatrix_ctor_habitate(size_t height, size_t width, struct mp
 	for (size_t y = 0 ; y < matrix -> widthLocal ; y++) {
 		for (size_t x = 0 ; x < matrix -> height ; x++) {
 			matrix -> data[y * matrix -> height + x ] = habitant(x, y + (size_t)displ[uplink ->rank] / matrix -> width, scale);
-			//matrix -> data[(y+displ[uplink ->rank])*matrix -> height + x ] = uplink -> rank;
 		}
 	}
 	free(counts);
@@ -32,7 +31,7 @@ void mpiMatrix_minus( struct mpiMatrix * matrix, struct mpi_com *uplink ,double(
 }
 
 // fst.f
-void fst_(double *vector, int *vector_length, double *aux_mem, int *aux_mem_length); // Vector, Array Length, Auxiliary Memory, Length
+void fst_(double *vector, int *vector_length, double *aux_mem, int *aux_mem_length); 
 void fstinv_(double *v, int *n, double *w, int *nn);
 
 void mpiMatrix_rowfst(struct mpiMatrix *matrix) {
@@ -147,7 +146,6 @@ void mpiMatrix_prettyPrint(struct mpiMatrix *matrix , struct mpi_com *uplink) {
 void populate(struct mpiMatrix *matrix , struct mpi_com *uplink) {
 	int *counts =  mpiMatrix_genCounts(matrix, uplink);
 	int *displ =  mpiMatrix_genDispl(uplink, counts);
-	//printf("rank: %zu nprocs: %zu\n", uplink -> rank , uplink -> nprocs );
 	for (size_t i = 0 ; i < matrix -> widthLocal; i++) {
 		for (size_t j = 0 ; j < matrix->height ; j++) {
 			matrix -> data[
